@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1> Delete Account </h1>
+
+<form action = "" method = "POST" novalidate>
+    {{form.hidden_tag()}}
+
+    <p>
+        {{form.username.label}}
+        {{form.username(size=32)}}
+    </p>
+    <p>
+        {{form.email.label}}
+        {{form.email(size=64)}}
+    </p>
+    <p>
+        {{form.password.label}}
+        {{form.password(size=64)}}
+    </p>
+    <p>
+        {{form.retypePassword.label}}
+        {{form.retypePassword(size=64)}}
+    </p>
+    <p>    
+        {{form.confirmation.label}}
+        {{form.confirmation()}}
+    </p>
+    {{form.submit()}}
+</form>
+
+{% endblock %}
