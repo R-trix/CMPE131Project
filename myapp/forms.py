@@ -23,3 +23,18 @@ class RegisterForm(FlaskForm):
 
     submit = SubmitField("Submit")
 
+class DeleteForm(FlaskForm):
+    """
+	this form will allow the users to delete their account if desired
+    """
+
+    username = StringField("Enter a username", validators=[DataRequired()])
+    email = StringField("Enter your email", validators=[DataRequired()])
+
+    password = PasswordField("Enter a password", validators=[DataRequired()])
+    retypePassword = PasswordField(
+        "Please retype your password", validators=[DataRequired()])
+
+    submit = SubmitField("Submit")
+    confirm = BooleanField("Are you sure you would like to delete your account permanently?")
+
