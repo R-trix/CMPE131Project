@@ -88,11 +88,7 @@ def newacc():
 def delete():
     '''
     Deletes user from database
-    
-    Changelog:
-        Dylan 5/3: Database functionality added
-        Dylan 5/10: Password encryption
-    '''
+       '''
     form = DeleteForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=session['username']).first()
