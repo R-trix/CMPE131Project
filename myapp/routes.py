@@ -84,7 +84,25 @@ def newacc():
     return render_template("register.html", form=form)
 
 #need to add delete acc def
-
+@app.route('/deleteaccount', methods=['GET', 'POST'])
+def delete():
+    '''
+    Deletes user from database
+    
+    Changelog:
+        Dylan 5/3: Database functionality added
+        Dylan 5/10: Password encryption
+    '''
+    form = DeleteForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=session['username']).first()
+        if form.username.data == user.username:
+            session.pop('username', None)
+            db.session.delete(user)
+            db.session.commit()
+            flash("Account successfully deleted.")
+            return redirect(url_for('index'))
+    return render_template('delete-account.html', form=form)
 
 @myobj.route("/todo", methods=["POST", "GET"])
 def todo():
