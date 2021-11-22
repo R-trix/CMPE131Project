@@ -1,8 +1,8 @@
 from myapp import myobj, db
-from myapp .forms import LoginForm, RegisterForm, DeleteForm
+from myapp.forms import LoginForm, RegisterForm, DeleteForm
 from myapp.models import User
 
-from flask import render_template, flash, redirect
+from flask import render_template, flash, redirect, request
 from flask_login import login_user ######DOUBLE CHECK######
 
 from myapp import login
@@ -39,14 +39,14 @@ def login():
 
         if(user is None or not user.check_password(form.password.data)):
             flash("sorry, the password you entered in incorrect. please try again.")
-            return redirect('/login')
+            return redirect("/login")
 
 
         login_user(user, remember = remember_me)
-        return redirect('/')
+        return redirect("/")
 
 
-    return render_template('login.html', form=form)
+    return render_template("login.html", form=form)
 
 #make logout def
 
@@ -73,14 +73,60 @@ def newacc():
 
         if(credentials_check[0] == False):
             flash(f'{credentials_check[1]} Try again.')
-            return redirect('/create account')
+            return redirect("/create account")
 
         user = User(username=username, email=email, password=password)
         db.session.add(user)
         db.session.commit()
-        flash('Account is now created. You may log in now.')
-        return redirect('/')
+        flash("Account is now created. You may log in now.")
+        return redirect("/")
 
-    return render_template('register.html', form=form)
+    return render_template("register.html", form=form)
 
 #need to add delete acc def
+
+
+@myobj.route("/todo", methods=["POST", "GET"])
+def todo():
+    if request.method=="POST":
+        task_content=request.form["content"]
+	new_task=Todo(content=task_content)
+
+	try:
+	    db.session.add(new_task)
+	    db.session.commit()
+	    return redirect("/")
+	except:
+	    return "Sorry, error adding task, pelase try again later."
+
+    else:
+        tasks=Todo.query.all()
+	return render_template("index.html", tasks=tasks)
+
+
+@myobj.route("/delete/<int:id>")
+def delete(id):
+    task_to_delete=Todo.query.get_or_404(id)
+    try:
+	db.session.delete(task_to_delete)
+	db.session.commit()
+	return redirect("/")
+    except:
+	return "Error deleting task, pelase try again later."
+
+
+@myobj.route("/update/<int:id>",methods=["GET", "POST"])
+def update(id):
+    task=Todo.query.get_or_404(id)
+
+    if request.method == 'POST':
+        task.content = request.form['content']
+
+        try:
+            db.session.commit()
+            return redirect('/')
+        except:
+            return 'There was an issue while updating that task'
+
+    else:
+        return render_template('update.html', task=task)
