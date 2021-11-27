@@ -49,7 +49,15 @@ def login():
     return render_template("login.html", form=form)
 
 #make logout def
-
+@myobj.route("/logout")
+def logout():
+    """
+          this allows the user to logout. 
+	  returns: redirects the user to the main home page after they log out
+    """
+    logout_user()
+    return redirect("/")
+ 
 #account creation
 @myobj.route("/create account", methods=["GET", "POST"])
 def newacc():
@@ -104,6 +112,7 @@ def delete_acc():
 def todo():
     if request.method=="POST":
         task_content=request.form["content"]
+<<<<<<< HEAD
         new_task = Todo(content=task_content)
 
         try:
@@ -112,6 +121,16 @@ def todo():
             return redirect("/")
         except:
             return "Sorry, error adding task, pelase try again later."
+=======
+        new_task=Todo(content=task_content)
+
+        try:
+	    db.session.add(new_task)
+	    db.session.commit()
+	    return redirect("/")
+	except:
+	    return "Sorry, error adding task, pelase try again later."
+>>>>>>> 27999f496373c8bf1d22d393120d520152b713e1
 
     else:
         tasks=Todo.query.all()

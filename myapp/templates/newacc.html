@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Create an account</h1>
+
+<form action = "" method = "POST" novalidate>
+    {{form.hidden_tag()}}
+
+    <p>
+        {{form.username.label}}
+        {{form.username(size=64)}}
+    </p>
+    <p>
+        {{form.email.label}}
+        {{form.email(size=64)}}
+    </p>
+    <p>
+        {{form.password.label}}
+        {{form.password(size=64)}}
+    </p>
+    <p>
+        {{form.reenterPassword.label}}
+        {{form.reenterPassword(size=64)}}
+    </p>
+    {{form.submit()}}
+</form>
+
+{% endblock %}
