@@ -16,7 +16,7 @@ def main():
 
 	returns: render_template - main page's webpage info
     """
-    return render_template('home.html',user=current_user)
+    return render_template('home.html') #,user=current_user
 
 
 @myobj.route("/login",methods=['GET','POST'])
@@ -84,8 +84,8 @@ def newacc():
     return render_template("register.html", form=form)
 
 #need to add delete acc def
-@app.route('/deleteaccount', methods=['GET', 'POST'])
-def delete():
+@myobj.route('/deleteaccount', methods=['GET', 'POST'])
+def delete_acc():
     '''
     Deletes user from database
        '''
@@ -104,7 +104,7 @@ def delete():
 def todo():
     if request.method=="POST":
         task_content=request.form["content"]
-	    new_task=Todo(content=task_content)
+        new_task = Todo(content=task_content)
 
         try:
             db.session.add(new_task)
@@ -115,7 +115,7 @@ def todo():
 
     else:
         tasks=Todo.query.all()
-	    return render_template("index.html", tasks=tasks)
+        return render_template("index.html", tasks=tasks)
 
 
 @myobj.route("/delete/<int:id>")
