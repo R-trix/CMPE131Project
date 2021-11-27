@@ -49,7 +49,15 @@ def login():
     return render_template("login.html", form=form)
 
 #make logout def
-
+@myobj.route("/logout")
+def logout():
+    """
+          this allows the user to logout. 
+	  returns: redirects the user to the main home page after they log out
+    """
+    logout_user()
+    return redirect("/")
+ 
 #account creation
 @myobj.route("/create account", methods=["GET", "POST"])
 def newacc():
@@ -90,9 +98,9 @@ def newacc():
 def todo():
     if request.method=="POST":
         task_content=request.form["content"]
-	new_task=Todo(content=task_content)
+        new_task=Todo(content=task_content)
 
-	try:
+        try:
 	    db.session.add(new_task)
 	    db.session.commit()
 	    return redirect("/")
