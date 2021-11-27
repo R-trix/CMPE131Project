@@ -16,7 +16,7 @@ def main():
 
 	returns: render_template - main page's webpage info
     """
-    return render_template('home.html') #,user=current_user
+    return render_template("home.html") #,user=current_user
 
 
 @myobj.route("/login",methods=['GET','POST'])
@@ -59,7 +59,7 @@ def logout():
     return redirect("/")
  
 #account creation
-@myobj.route("/create account", methods=["GET", "POST"])
+@myobj.route("/createaccount", methods=["GET", "POST"])
 def newacc():
     """
 	this page is created so that users can make a new account; leads to a login form 
@@ -81,7 +81,7 @@ def newacc():
 
         if(credentials_check[0] == False):
             flash(f'{credentials_check[1]} Try again.')
-            return redirect("/create account")
+            return redirect("/createaccount")
 
         user = User(username=username, email=email, password=password)
         db.session.add(user)
@@ -89,7 +89,7 @@ def newacc():
         flash("Account is now created. You may log in now.")
         return redirect("/")
 
-    return render_template("register.html", form=form)
+    return render_template("newacc.html", form=form)
 
 #need to add delete acc def
 @myobj.route('/deleteaccount', methods=['GET', 'POST'])
