@@ -106,27 +106,27 @@ def todo():
         task_content=request.form["content"]
 	    new_task=Todo(content=task_content)
 
-	try:
-	    db.session.add(new_task)
-	    db.session.commit()
-	    return redirect("/")
-	except:
-	    return "Sorry, error adding task, pelase try again later."
+        try:
+            db.session.add(new_task)
+            db.session.commit()
+            return redirect("/")
+        except:
+            return "Sorry, error adding task, pelase try again later."
 
     else:
         tasks=Todo.query.all()
-	return render_template("index.html", tasks=tasks)
+	    return render_template("index.html", tasks=tasks)
 
 
 @myobj.route("/delete/<int:id>")
 def delete(id):
     task_to_delete=Todo.query.get_or_404(id)
     try:
-	db.session.delete(task_to_delete)
-	db.session.commit()
-	return redirect("/")
+	    db.session.delete(task_to_delete)
+	    db.session.commit()
+	    return redirect("/")
     except:
-	return "Error deleting task, pelase try again later."
+	    return "Error deleting task, pelase try again later."
 
 
 @myobj.route("/update/<int:id>",methods=["GET", "POST"])
