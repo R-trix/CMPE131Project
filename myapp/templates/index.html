@@ -1,39 +1,31 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block head %} {% endblock %} {% block body %}
 
-{% block head %}
+<p>Test</p>
 
-{% endblock %}
+{% if tasks|length<1 %}
+<p>There are no added tasks, you can create one form below.</p>
+{% else %}
 
-{% block body %}
+<table>
+  <tr>
+    <th>Task</th>
+    <th>Actions</th>
+  </tr>
 
-    <p> Test </p>
+  {% for task in tasks %}
+  <tr>
+    <td>{{ task.content }}</td>
+    <td>
+      <a href="delete/{{task.id }}">Delete</a> <br />
+      <a href="update/{{task.id }}">Update</a>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
 
-    {% if tasks|length<1 %}
-    <p> There are no added tasks, you can create one form below. </p>
-    {% else %}
+<form action="/" method="POST">
+  <input type="text" name="content" id="content" />
+  <input type="submit" value="Add Task" />
+</form>
 
-    <table>
-        <tr>
-            <th>Task</th>
-            <th>Actions</th>
-        </tr>
-
-	{% for task in tasks %}
-        <tr>
-            <td>{{ task.content }}  </td>
-            <td>
-                <a href="delete/{{task.id }}">Delete</a> <br>
-                <a href="update/{{task.id }}">Update</a>
-            </td>
-        </tr>
-	{% endfor %}
-    </table>
-
-
-    <form action="/" method="POST">
-        <input type="text" name="content" id="content">
-        <input type="submit" value="Add Task">
-    </form>
-
-
-{% endblock %}
+{% endif %} {% endblock %}
