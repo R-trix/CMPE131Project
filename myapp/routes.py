@@ -31,10 +31,11 @@ def login():
 
     if(form.validate_on_submit()): 
 
-        username = form.username.data
-        password = form.password.data
-        remember_me = form.remember_me.data
+        #username = form.username.data
+        #password = form.password.data
+        #remember_me = form.remember_me.data
 
+        flash(f'Login requested for user {form.username.data}, remember_me = {form.remember_me.data}')
         user = User.query.filter_by(username = username).first()
 
         if(user is None or not user.check_password(form.password.data)):
