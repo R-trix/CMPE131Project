@@ -93,9 +93,9 @@ class User(db.Model):
 
 
 class ToDo(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     content = db.Column(db.String(128), nullable=False)
 
-    def __rep__self(self):
-        return '<Task %r>' % self.id
-
+    def __repr__(self):
+        # return '<Task %r>' % self.id
+        return f'<Task {self.id}>'

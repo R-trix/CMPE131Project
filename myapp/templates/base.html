@@ -1,24 +1,42 @@
 <!DOCTYPE html>
 <html>
+<<<<<<< HEAD
 	<head>
 		<a href="/"> Home Page </a>
 		<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+=======
+  <head>
+    <a href="/"> Back to home page. </a>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+>>>>>>> 96dc3293729d5be17d19fa27c65a4428b3d4269d
 
-		{% block title %}{% endblock %}
-	</head>
+    {% block title %}{% endblock %}
+  </head>
 
-	<body>
-		{% with messages = get_flashed_messages() %}
-		{% if messages %}
-		<ul>
-			{% for message in messages %}
-			<li>{{ message }}</li>
-			{% endfor %}
-		</ul>
-		{% endif %}
-		{% endwith %}
+  <body>
+    {% with messages = get_flashed_messages() %} {% if messages %}
+    <ul>
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %} {% endwith %}
 
+<<<<<<< HEAD
 		{% block content %} {% endblock %}
 	</body>
 	
+=======
+    <div>
+      <p>My Homepage</p>
+      <a href="/">Home</a>
+      <a href="/login">Login</a>
+      <a href="/todo">ToDo</a>
+    </div>
+    {% block content %} {% endblock %}
+  </body>
+>>>>>>> 96dc3293729d5be17d19fa27c65a4428b3d4269d
 </html>
