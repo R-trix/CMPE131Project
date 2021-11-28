@@ -8,6 +8,12 @@ class LoginForm(FlaskForm):
     """ 
         lets users login
     """
+    username = StringField('Username', validators=[DataRequired()])
+    password = StringField('Password', validators=[DataRequired()])
+
+    remember_me = BooleanField('Remember Me')
+
+    submit = SubmitField('Submit')
 
 
 class RegisterForm(FlaskForm):
@@ -23,9 +29,10 @@ class RegisterForm(FlaskForm):
 
     submit = SubmitField("Submit")
 
+
 class DeleteForm(FlaskForm):
     """
-	this form will allow the users to delete their account if desired
+        this form will allow the users to delete their account if desired
     """
 
     username = StringField("Enter a username", validators=[DataRequired()])
@@ -36,5 +43,5 @@ class DeleteForm(FlaskForm):
         "Please retype your password", validators=[DataRequired()])
 
     submit = SubmitField("Submit")
-    confirm = BooleanField("Are you sure you would like to delete your account permanently?")
-
+    confirm = BooleanField(
+        "Are you sure you would like to delete your account permanently?")
