@@ -118,6 +118,63 @@ def delete_acc():
     return render_template('delete-account.html', form=form)
 
 
+<<<<<<< HEAD
+=======
+
+@myobj.route('/stopwatch', methods=['GET', 'POST'])
+import time
+import tkinter as tk
+from datetime import datetime as dt
+
+import threading
+
+class MyTimer(threading.Thread):
+
+
+    def __init__(self, t):
+        super(MyTimer,self).__init__()
+        self.txt = t
+        self.running = True
+
+
+    def run(self):
+        while self.running:
+            self.txt['text'] = time.time()
+
+
+mgui = tk.Tk()
+mgui.title('Test')
+
+txt = tk.Label(mgui, text="time")
+txt.grid(row=0,columnspan=2)
+
+timer = None
+
+def time_convert(sec):
+    elapsed = end - start
+    result = "Time Taken: %02d:%02d:%02d:%02d" % (
+    elapsed.days, elapsed.seconds // 3600, elapsed.seconds // 60 % 60, elapsed.seconds % 60)
+
+
+def cmd1():
+    global start
+    start = dt.now()
+
+def cmd2():
+    end = dt.now()
+    elapsed = end - start
+    result = "Time Taken: %02d:%02d:%02d:%02d" % (
+    elapsed.days, elapsed.seconds // 3600, elapsed.seconds // 60 % 60, elapsed.seconds % 60)
+    print(result)
+
+btn = tk.Button(mgui, text="Start stopwatch", command =cmd1)
+btn.grid(row=1,column=1)
+btn2 = tk.Button(mgui, text="Stop stopwatch ", command =cmd2)
+btn2.grid(row=1,column=2)
+
+mgui.mainloop()
+
+>>>>>>> 0d46203b9034fa06a5466094ca81ca0e8b56ae8b
 @myobj.route("/todo", methods=["POST", "GET"])
 def todo():
     if request.method == "POST":
