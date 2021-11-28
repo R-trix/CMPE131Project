@@ -102,7 +102,8 @@ def newacc():
 def delete_acc():
     '''
     Deletes user from database
-       '''
+    '''
+
     form = DeleteForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=session['username']).first()
@@ -126,7 +127,7 @@ def todo():
             db.session.commit()
             return redirect("/")
         except:
-            return "Sorry, error adding task, pelase try again later."
+            return "Sorry, error adding task, please try again later."
 
     else:
         tasks = Todo.query.all()
