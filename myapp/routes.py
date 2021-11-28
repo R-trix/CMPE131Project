@@ -79,8 +79,8 @@ def newacc():
 
         credentials_check = User.check_valid_credentials(username=username, email=email, password=password, retypePassword=retypePassword)
 
-        if(credentials_check[0] == False):
-            flash(f'{credentials_check[1]} Try again.')
+        if(credentials_check == False):
+            flash('Please try again.')
             return redirect("/createaccount")
 
         user = User(username=username, email=email, password=password)
