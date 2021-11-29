@@ -6,6 +6,11 @@ from myapp.models import ToDo
 from flask import render_template, flash, redirect, request
 from flask_login import login_user  # DOUBLE CHECK######
 
+import time
+import tkinter as tk
+from datetime import datetime as dt
+
+import threading
 #from myapp import login
 
 
@@ -98,8 +103,52 @@ def newacc():
 
     return render_template("newacc.html", form=form)
 
-# need to add delete acc def
+@myobj.route('/stopwatch', methods=['GET', 'POST'])
+class MyTimer(threading.Thread):
 
+
+    def __init__(self, t):
+        super(MyTimer,self).__init__()
+        self.txt = t
+        self.running = True
+
+
+    def run(self):
+        while self.running:
+            self.txt['text'] = time.time()
+
+
+mgui = tk.Tk()
+mgui.title('Test')
+
+txt = tk.Label(mgui, text="time")
+txt.grid(row=0,columnspan=2)
+
+timer = None
+
+def time_convert(sec):
+    elapsed = end - start
+    result = "Time Taken: %02d:%02d:%02d:%02d" % (
+    elapsed.days, elapsed.seconds // 3600, elapsed.seconds // 60 % 60, elapsed.seconds % 60)
+
+
+def cmd1():
+    global start
+    start = dt.now()
+
+def cmd2():
+    end = dt.now()
+    elapsed = end - start
+    result = "Time Taken: %02d:%02d:%02d:%02d" % (
+    elapsed.days, elapsed.seconds // 3600, elapsed.seconds // 60 % 60, elapsed.seconds % 60)
+    print(result)
+
+btn = tk.Button(mgui, text="Start", command =cmd1)
+btn.grid(row=1,column=1)
+btn2 = tk.Button(mgui, text="Stop", command =cmd2)
+btn2.grid(row=1,column=2)
+
+mgui.mainloop()
 
 @myobj.route('/deleteaccount', methods=['GET', 'POST'])
 def delete_acc():
