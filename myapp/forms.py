@@ -49,9 +49,5 @@ class DeleteForm(FlaskForm):
 
 class markdown_notes(FlaskForm):
     notes_name = StringField( 'Name', validators = [DataRequired()])
-<<<<<<< HEAD
     note_description = StringField('Note Description', validators = [DataRequired()], widget=TextArea() ,render_kw={'style': 'width: 500px'})
-=======
-    note_description = StringField('Note Description', validators = [DataRequired()], widget=TextArea() ,render_kw={'style': 'width: 500px'},)
->>>>>>> 5dcef6688da7e2ae922e12f1ba96cd59fa68a4fc
     save_notes = SubmitField('Save Notes')
