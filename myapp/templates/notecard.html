@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Hello {{ name }}! Welcome to Notes Taker</h1>
+<p>Time to take some notes:</p>
+<form method="POST" novalidate enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        {% if form.file.errors %}
+        <ul class="errors">
+                {% for error in form.file.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+        </ul>
+        {% endif %}
+        <p> {{ form.file }} </p>
+        <p> {{ form.submit() }} </p>
+</form>
+<p> {{title}} </p>
+<ul>
+        {% for note_title in note_titles %}
+        <li>
+                <a href="{{ url_for('show_note', title=note_title) }}">
+                        {{ note_title }}
+                </a>
+        </li>
+        {% endfor %}
+</ul>
+{% endblock %}

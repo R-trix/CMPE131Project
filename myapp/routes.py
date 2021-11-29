@@ -218,3 +218,20 @@ def update(id):
 
     else:
         return render_template('update.html', task=task)
+
+@app_Obj.route('/create_Notes', methods = ['GET', 'POST'])
+def create_notes():
+    forms = markdown_notes()
+    title = "Create Notes in markdown"
+
+    if form.validate_on_submit():
+        new_note = NoteCards(notes_name = form.notes_name.data, notes_description = form.notes_description.data)
+        try:
+            db.session.add(new_note)
+            db.session.commit()
+            return redirect('/create_Notes')
+        except:
+            return flash ('Error: Unable to save Notes!')
+    else:
+        notecards = NoteCards.query.all()
+        return render_template('notecard.html',form=form, notecards=notecards,title=title)
