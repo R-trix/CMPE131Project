@@ -100,3 +100,9 @@ class ToDo(db.Model):
     def __repr__(self):
         # return '<Task %r>' % self.id
         return f'<Task {self.id}>'
+
+class NoteCards(db.Model)
+    id = db.Column(db.Integer, primary_key = True)
+    notes_name = db.Column(db.String(256))
+    notes_description = db.Column(db.String(512))
+    

@@ -1,16 +1,28 @@
 from myapp import myobj, db
 from myapp.forms import LoginForm, RegisterForm, DeleteForm
 from myapp.models import User
+from myapp.models import ToDo
 
 from flask import render_template, flash, redirect, request
+<<<<<<< HEAD
 from flask_login import login_user, logout_user, login_required, current_user ######DOUBLE CHECK######
+=======
+from flask_login import login_user  # DOUBLE CHECK######
+>>>>>>> 63e0040ed0c09611259cd93b8bf4d3b2ad9ea9ce
 
+import time
+import tkinter as tk
+from datetime import datetime as dt
+
+import threading
 #from myapp import login
+
 
 @myobj.route("/")
 def main():
     """
         this will route the  primary directory of website to home.html
+<<<<<<< HEAD
 	if user is not logged in, it will pass in the login form
 	if user is logged in, it will reroute to the page
 	returns: render_template - main page's webpage info
@@ -19,68 +31,81 @@ def main():
         return render_template("home.html")
     else:
         return render_template("homeanon.html") #,user=current_user
+=======
+        if user is not logged in, it will pass in the login form
+        if user is logged in, it will reroute to the page
 
-@myobj.route("/login",methods=['GET','POST'])
+        returns: render_template - main page's webpage info
+    """
+    return render_template("home.html")  # ,user=current_user
+
+>>>>>>> 63e0040ed0c09611259cd93b8bf4d3b2ad9ea9ce
+
+@myobj.route("/login", methods=['GET', 'POST'])
 def login():
     """
-	users can login to their account via this login page
-	form validate will cross-check that the info entered by the user exists in the db (ensure password matches)
-	
-	returns: render_template: webpage where user can type in their credentials in order to login
+        users can login to their account via this login page
+        form validate will cross-check that the info entered by the user exists in the db (ensure password matches)
+
+        returns: render_template: webpage where user can type in their credentials in order to login
     """
     form = LoginForm()
 
-    if(form.validate_on_submit()): 
+    if(form.validate_on_submit()):
 
         #username = form.username.data
         #password = form.password.data
         #remember_me = form.remember_me.data
 
-        flash(f'Login requested for user {form.username.data}, remember_me = {form.remember_me.data}')
-        user = User.query.filter_by(username = username).first()
+        flash(
+            f'Login requested for user {form.username.data}, remember_me = {form.remember_me.data}')
+        user = User.query.filter_by(username=username).first()
 
         if(user is None or not user.check_password(form.password.data)):
             flash("sorry, the password you entered in incorrect. please try again.")
             return redirect("/login")
 
-
-        login_user(user, remember = remember_me)
+        login_user(user, remember=remember_me)
         return redirect("/")
-
 
     return render_template("login.html", form=form)
 
-#make logout def
+# make logout def
+
+
 @myobj.route("/logout")
 @login_required
 def logout():
     """
           this allows the user to logout. 
-	  returns: redirects the user to the main home page after they log out
+          returns: redirects the user to the main home page after they log out
     """
     logout_user()
     return redirect("/")
- 
-#account creation
+
+# account creation
+
+
 @myobj.route("/createaccount", methods=["GET", "POST"])
 def newacc():
     """
-	this page is created so that users can make a new account; leads to a login form 
-	form validate will ensure valid credentials were entered
-        
+        this page is created so that users can make a new account; leads to a login form 
+        form validate will ensure valid credentials were entered
+
         returns: render_template: this webpage will have the new account and login form info 
     """
 
     form = RegisterForm()
 
-    if (form.validate_on_submit()): 
+    if (form.validate_on_submit()):
 
         username = form.username.data
         email = form.email.data
         password = form.password.data
         retypePassword = form.retypePassword.data
 
-        credentials_check = User.check_valid_credentials(username=username, email=email, password=password, retypePassword=retypePassword)
+        credentials_check = User.check_valid_credentials(
+            username=username, email=email, password=password, retypePassword=retypePassword)
 
         if(credentials_check == False):
             flash('Please try again.')
@@ -94,12 +119,58 @@ def newacc():
 
     return render_template("newacc.html", form=form)
 
-#need to add delete acc def
+@myobj.route('/stopwatch', methods=['GET', 'POST'])
+class MyTimer(threading.Thread):
+
+
+    def __init__(self, t):
+        super(MyTimer,self).__init__()
+        self.txt = t
+        self.running = True
+
+
+    def run(self):
+        while self.running:
+            self.txt['text'] = time.time()
+
+
+mgui = tk.Tk()
+mgui.title('Test')
+
+txt = tk.Label(mgui, text="time")
+txt.grid(row=0,columnspan=2)
+
+timer = None
+
+def time_convert(sec):
+    elapsed = end - start
+    result = "Time Taken: %02d:%02d:%02d:%02d" % (
+    elapsed.days, elapsed.seconds // 3600, elapsed.seconds // 60 % 60, elapsed.seconds % 60)
+
+
+def cmd1():
+    global start
+    start = dt.now()
+
+def cmd2():
+    end = dt.now()
+    elapsed = end - start
+    result = "Time Taken: %02d:%02d:%02d:%02d" % (
+    elapsed.days, elapsed.seconds // 3600, elapsed.seconds // 60 % 60, elapsed.seconds % 60)
+    print(result)
+
+btn = tk.Button(mgui, text="Start", command =cmd1)
+btn.grid(row=1,column=1)
+btn2 = tk.Button(mgui, text="Stop", command =cmd2)
+btn2.grid(row=1,column=2)
+
+mgui.mainloop()
+
 @myobj.route('/deleteaccount', methods=['GET', 'POST'])
 def delete_acc():
     '''
     Deletes user from database
-       '''
+    '''
     form = DeleteForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=session['username']).first()
@@ -111,12 +182,13 @@ def delete_acc():
             return redirect(url_for('index'))
     return render_template('delete-account.html', form=form)
 
+
 @myobj.route("/todo", methods=["POST", "GET"])
 def todo():
-    if request.method=="POST":
-        task_content=request.form["content"]
-        new_task = Todo(content=task_content)
-
+    if request.method == "POST":
+        task_content = request.form["content"]
+        #new_task = Todo(content=task_content)
+        new_task = todo(content=task_content)
         try:
             db.session.add(new_task)
             db.session.commit()
@@ -125,24 +197,31 @@ def todo():
             return "Sorry, error adding task, pelase try again later."
 
     else:
-        tasks=Todo.query.all()
+        # tasks=Todo.query.all()
+        # db.session.query(todo).query.all()
+        # db.session.query(todo).all()
+       # ToDo.query.all()
+        tasks = ToDo.query.all()
+
         return render_template("index.html", tasks=tasks)
 
 
 @myobj.route("/delete/<int:id>")
 def delete(id):
-    task_to_delete=Todo.query.get_or_404(id)
+    # task_to_delete=Todo.query.get_or_404(id)
+    task_to_delete = todo.query.get_or_404(id)
     try:
-	    db.session.delete(task_to_delete)
-	    db.session.commit()
-	    return redirect("/")
+        db.session.delete(task_to_delete)
+        db.session.commit()
+        return redirect("/")
     except:
-	    return "Error deleting task, pelase try again later."
+        return "Error deleting task, pelase try again later."
 
 
-@myobj.route("/update/<int:id>",methods=["GET", "POST"])
+@myobj.route("/update/<int:id>", methods=["GET", "POST"])
 def update(id):
-    task=Todo.query.get_or_404(id)
+    # task=Todo.query.get_or_404(id)
+    task = todo.query.get_or_404(id)
 
     if request.method == 'POST':
         task.content = request.form['content']
@@ -154,4 +233,25 @@ def update(id):
             return 'There was an issue while updating that task'
 
     else:
+<<<<<<< HEAD
         return render_template('update.html', task=task)
+=======
+        return render_template('update.html', task=task)
+
+@app_Obj.route('/create_Notes', methods = ['GET', 'POST'])
+def create_notes():
+    forms = markdown_notes()
+    title = "Create Notes in markdown"
+
+    if form.validate_on_submit():
+        new_note = NoteCards(notes_name = form.notes_name.data, notes_description = form.notes_description.data)
+        try:
+            db.session.add(new_note)
+            db.session.commit()
+            return redirect('/create_Notes')
+        except:
+            return flash ('Error: Unable to save Notes!')
+    else:
+        notecards = NoteCards.query.all()
+        return render_template('notecard.html',form=form, notecards=notecards,title=title)
+>>>>>>> 63e0040ed0c09611259cd93b8bf4d3b2ad9ea9ce
