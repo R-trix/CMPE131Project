@@ -9,7 +9,7 @@ class User(db.Model):
         user DB structure for storing into db
     """
 
-    def __init__(self, username, email, password):
+    def __init__(self, username, email, password, is_authenticated):
         """
         parameters:
                 email - string: user's email address; gets stored in a coulumn
@@ -20,6 +20,7 @@ class User(db.Model):
         self.set_password(password)
         self.email = email
         self.public = True
+        is_authenticated=False
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(128), index=True, unique=True)

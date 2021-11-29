@@ -1,10 +1,6 @@
 {% extends "base.html" %} {% block content %}
 
-<h1>Hello! Welcome to The Daily 7!</h1>
-
-<h2><a href="/createaccount">Create Account</a></h2>
-
-<h2><a href="/login">Login</a></h2>
+<h1>Hello {{user.username}}! Welcome to The Daily 7!</h1>
 
 <h2><a href="/logout">Logout</a></h2>
 

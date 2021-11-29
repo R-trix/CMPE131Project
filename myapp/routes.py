@@ -3,11 +3,11 @@ from myapp.forms import LoginForm, RegisterForm, DeleteForm
 from myapp.models import User
 
 from flask import render_template, flash, redirect, request
-from flask_login import login_user ######DOUBLE CHECK######
+from flask_login import login_user, login_required, current_user ######DOUBLE CHECK######
 
 #from myapp import login
 
-@myobj.route("/")
+@myobj.route("/", methods = ['GET'])
 def main():
     """
         this will route the  primary directory of website to home.html
@@ -16,7 +16,11 @@ def main():
 
 	returns: render_template - main page's webpage info
     """
-    return render_template("home.html") #,user=current_user
+    #if current_user.is_authenticated:
+    #    username = form.username.data
+    #    return render_template("home.html", user = username)
+    #else:
+    return render_template("homeanon.html") #,user=current_user
 
 
 @myobj.route("/login",methods=['GET','POST'])
@@ -31,23 +35,22 @@ def login():
 
     if(form.validate_on_submit()): 
 
-        #username = form.username.data
-        #password = form.password.data
-        #remember_me = form.remember_me.data
+        username = form.username.data
+        password = form.password.data
+        remember_me = form.remember_me.data
 
         flash(f'Login requested for user {form.username.data}, remember_me = {form.remember_me.data}')
         user = User.query.filter_by(username = username).first()
 
         if(user is None or not user.check_password(form.password.data)):
-            flash("sorry, the password you entered in incorrect. please try again.")
+            flash("Sorry, the username/password you entered in incorrect. please try again.")
             return redirect("/login")
 
 
         login_user(user, remember = remember_me)
-        return redirect("/")
+        return render_template("home.html", user=username)
 
-
-    return render_template("login.html", form=form)
+    return redirect("/")
 
 #make logout def
 @myobj.route("/logout")
