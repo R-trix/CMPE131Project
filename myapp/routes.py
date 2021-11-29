@@ -4,11 +4,7 @@ from myapp.models import User
 from myapp.models import ToDo
 
 from flask import render_template, flash, redirect, request
-<<<<<<< HEAD
 from flask_login import login_user, logout_user, login_required, current_user ######DOUBLE CHECK######
-=======
-from flask_login import login_user  # DOUBLE CHECK######
->>>>>>> 63e0040ed0c09611259cd93b8bf4d3b2ad9ea9ce
 
 import time
 import tkinter as tk
@@ -22,7 +18,6 @@ import threading
 def main():
     """
         this will route the  primary directory of website to home.html
-<<<<<<< HEAD
 	if user is not logged in, it will pass in the login form
 	if user is logged in, it will reroute to the page
 	returns: render_template - main page's webpage info
@@ -31,15 +26,6 @@ def main():
         return render_template("home.html")
     else:
         return render_template("homeanon.html") #,user=current_user
-=======
-        if user is not logged in, it will pass in the login form
-        if user is logged in, it will reroute to the page
-
-        returns: render_template - main page's webpage info
-    """
-    return render_template("home.html")  # ,user=current_user
-
->>>>>>> 63e0040ed0c09611259cd93b8bf4d3b2ad9ea9ce
 
 @myobj.route("/login", methods=['GET', 'POST'])
 def login():
@@ -233,9 +219,6 @@ def update(id):
             return 'There was an issue while updating that task'
 
     else:
-<<<<<<< HEAD
-        return render_template('update.html', task=task)
-=======
         return render_template('update.html', task=task)
 
 @app_Obj.route('/create_Notes', methods = ['GET', 'POST'])
@@ -254,4 +237,3 @@ def create_notes():
     else:
         notecards = NoteCards.query.all()
         return render_template('notecard.html',form=form, notecards=notecards,title=title)
->>>>>>> 63e0040ed0c09611259cd93b8bf4d3b2ad9ea9ce
