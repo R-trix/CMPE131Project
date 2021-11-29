@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import BooleanField, IntegerField, StringField, PasswordField, SubmitField
 from flask_login import current_user
 from wtforms.validators import DataRequired
-
+from wtforms.widgets.core import TextArea
 
 
 class LoginForm(FlaskForm):
@@ -49,5 +49,9 @@ class DeleteForm(FlaskForm):
 
 class markdown_notes(FlaskForm):
     notes_name = StringField( 'Name', validators = [DataRequired()])
+<<<<<<< HEAD
     note_description = StringField('Note Description', validators = [DataRequired()], widget=TextArea() ,render_kw={'style': 'width: 500px'})
+=======
+    note_description = StringField('Note Description', validators = [DataRequired()], widget=TextArea() ,render_kw={'style': 'width: 500px'},)
+>>>>>>> 5dcef6688da7e2ae922e12f1ba96cd59fa68a4fc
     save_notes = SubmitField('Save Notes')
