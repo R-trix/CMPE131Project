@@ -1,6 +1,7 @@
 from myapp import myobj
 from myapp import db
 
+
 db.create_all()
 
 myobj.run(debug=True)

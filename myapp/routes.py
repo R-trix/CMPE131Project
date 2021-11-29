@@ -3,25 +3,22 @@ from myapp.forms import LoginForm, RegisterForm, DeleteForm
 from myapp.models import User
 
 from flask import render_template, flash, redirect, request
-from flask_login import login_user, login_required, current_user ######DOUBLE CHECK######
+from flask_login import login_user, logout_user, login_required, current_user ######DOUBLE CHECK######
 
 #from myapp import login
 
-@myobj.route("/", methods = ['GET'])
+@myobj.route("/")
 def main():
     """
         this will route the  primary directory of website to home.html
 	if user is not logged in, it will pass in the login form
 	if user is logged in, it will reroute to the page
-
 	returns: render_template - main page's webpage info
     """
-    #if current_user.is_authenticated:
-    #    username = form.username.data
-    #    return render_template("home.html", user = username)
-    #else:
-    return render_template("homeanon.html") #,user=current_user
-
+    if current_user.is_authenticated:
+        return render_template("home.html")
+    else:
+        return render_template("homeanon.html") #,user=current_user
 
 @myobj.route("/login",methods=['GET','POST'])
 def login():
@@ -35,25 +32,27 @@ def login():
 
     if(form.validate_on_submit()): 
 
-        username = form.username.data
-        password = form.password.data
-        remember_me = form.remember_me.data
+        #username = form.username.data
+        #password = form.password.data
+        #remember_me = form.remember_me.data
 
         flash(f'Login requested for user {form.username.data}, remember_me = {form.remember_me.data}')
         user = User.query.filter_by(username = username).first()
 
         if(user is None or not user.check_password(form.password.data)):
-            flash("Sorry, the username/password you entered in incorrect. please try again.")
+            flash("sorry, the password you entered in incorrect. please try again.")
             return redirect("/login")
 
 
         login_user(user, remember = remember_me)
-        return render_template("home.html", user=username)
+        return redirect("/")
 
-    return redirect("/")
+
+    return render_template("login.html", form=form)
 
 #make logout def
 @myobj.route("/logout")
+@login_required
 def logout():
     """
           this allows the user to logout. 
