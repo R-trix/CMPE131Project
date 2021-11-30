@@ -5,7 +5,7 @@ from myapp.models import ToDo
 
 from flask import render_template, flash, redirect, request
 # DOUBLE CHECK######
-from flask_login import login_user, logout_user, login_required, current_user
+from flask_login import login_user, logout_user, login_required, current_user, UserMixin
 
 import time
 import tkinter as tk
@@ -25,7 +25,7 @@ def main():
     if (current_user.is_anonymous):
         return render_template("homeanon.html") #,user=current_user
     else:
-        return render_template("home.html")
+        return render_template("home.html", current_user = current_user)
 
 @myobj.route("/login", methods=['GET', 'POST'])
 def login():
@@ -99,7 +99,7 @@ def newacc():
             flash('Please try again.')
             return redirect("/createaccount")
 
-        user = User(username=username, email=email, password=password, is_authenticated=False)
+        user = User(username=username, email=email, password=password)
         db.session.add(user)
         db.session.commit()
         flash("Account is now created. You may log in now.")

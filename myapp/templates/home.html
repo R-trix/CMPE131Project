@@ -2,7 +2,7 @@
 <h1> <i> Logged in html </i> </h1>
 <h1>Hello 
     {% if current_user.is_authenticated %} 
-     <h2> Hi {{ current_user.name }}! </h2>
+     <h2> Hi {{ current_user.username }}! </h2>
     {% endif %}
     Welcome to The Daily 7!
 </h1>

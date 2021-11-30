@@ -1,15 +1,15 @@
 from myapp import db
 from myapp import login
-from flask_login import current_user
+from flask_login import current_user, UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     """
         user DB structure for storing into db
     """
 
-    def __init__(self, username, email, password, is_authenticated):
+    def __init__(self, username, email, password): #, is_authenticated):
         """
         parameters:
                 email - string: user's email address; gets stored in a coulumn
@@ -20,7 +20,6 @@ class User(db.Model):
         self.set_password(password)
         self.email = email
         self.public = True
-        self.is_authenticated = False
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(128), index=True, unique=True)
@@ -93,7 +92,7 @@ class User(db.Model):
 # for the todo list thing
 
 
-class ToDo(db.Model):
+class ToDo(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     content = db.Column(db.String(128), nullable=False)
 
@@ -101,7 +100,7 @@ class ToDo(db.Model):
         # return '<Task %r>' % self.id
         return f'<Task {self.id}>'
 
-class NoteCards(db.Model):
+class NoteCards(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key = True)
     notes_name = db.Column(db.String(256))
     notes_description = db.Column(db.String(512))
