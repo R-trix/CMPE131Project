@@ -4,7 +4,8 @@ from myapp.models import User
 from myapp.models import ToDo
 
 from flask import render_template, flash, redirect, request
-from flask_login import login_user, logout_user, login_required, current_user ######DOUBLE CHECK######
+# DOUBLE CHECK######
+from flask_login import login_user, logout_user, login_required, current_user
 
 import time
 import tkinter as tk
@@ -17,15 +18,22 @@ import threading
 @myobj.route("/")
 def main():
     """
-        this will route the  primary directory of website to home.html
-	if user is not logged in, it will pass in the login form
-	if user is logged in, it will reroute to the page
-	returns: render_template - main page's webpage info
+        this will route the  primary directory of website to home.html; if user is not logged in, it will pass in the login form; if user is logged in, it will reroute to the page
+
+        returns: render_template - main page's webpage info
     """
+<<<<<<< HEAD
     if (current_user.is_anonymous):
         return render_template("homeanon.html") #,user=current_user
     else:
         return render_template("home.html")
+=======
+    if current_user.is_authenticated:
+        return render_template("home.html")
+    else:
+        return render_template("homeanon.html")  # ,user=current_user
+
+>>>>>>> 114519de5b8a300ee28ae9c85a8296c5362c9461
 
 @myobj.route("/login", methods=['GET', 'POST'])
 def login():
@@ -33,7 +41,7 @@ def login():
         users can login to their account via this login page
         form validate will cross-check that the info entered by the user exists in the db (ensure password matches)
 
-        returns: render_template: webpage where user can type in their credentials in order to login
+        returns: render_template: login form where users can input the required info to login
     """
     form = LoginForm()
 
@@ -64,6 +72,7 @@ def login():
 def logout():
     """
           this allows the user to logout. 
+
           returns: redirects the user to the main home page after they log out
     """
     logout_user()
@@ -78,7 +87,7 @@ def newacc():
         this page is created so that users can make a new account; leads to a login form 
         form validate will ensure valid credentials were entered
 
-        returns: render_template: this webpage will have the new account and login form info 
+        returns: render_template: this webpage will have the new account form info 
     """
 
     form = RegisterForm()
@@ -205,7 +214,8 @@ def todo():
         return render_template("index.html", tasks=tasks)
 
 
-@myobj.route("/delete/<int:id>")
+# @myobj.route("/delete/<int:id>")
+@myobj.route("/delete", methods=["GET", "POST"])
 def delete(id):
     """ 
         This feature allows user to delete an item they have added to their todo task list
@@ -222,7 +232,7 @@ def delete(id):
         return "Error deleting task, pelase try again later."
 
 
-@myobj.route("/update/<int:id>", methods=["GET", "POST"])
+@myobj.route("/update", methods=["GET", "POST"])
 def update(id):
     """ 
         This feature allows user to update an item they have added to their todo task list
@@ -239,12 +249,13 @@ def update(id):
             db.session.commit()
             return redirect('/')
         except:
-            return 'There was an issue while updating that task'
+            return "Error updating task, sorry, try again later. "
 
     else:
         return render_template('update.html', task=task)
 
-@myobj.route('/create_Notes', methods = ['GET', 'POST'])
+
+@myobj.route('/create_Notes', methods=['GET', 'POST'])
 def create_notes():
     forms = markdown_notes()
     title = "Create Notes in markdown"

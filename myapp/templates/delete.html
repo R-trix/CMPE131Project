@@ -1,16 +1,21 @@
-{% extends "base.html" %}
-{% block content %}
+{% extends "base.html" %} {% block content %}
 
-<h1> Delete Account </h1>
+<h1>Delete Account</h1>
 
-<form action = "" method = "POST" novalidate>
-    {{form.hidden_tag()}}
+<form action="" method="POST" novalidate>
+  {{form.hidden_tag()}}
 
+<<<<<<< HEAD
     <p>
         {{form.username.label}}
         {{form.username(size=32)}}
     </p>
     <!--<p>
+=======
+  <p>{{form.username.label}} {{form.username(size=32)}}</p>
+  <!--
+    <p>
+>>>>>>> 114519de5b8a300ee28ae9c85a8296c5362c9461
         {{form.email.label}}
         {{form.email(size=64)}}
     </p>
@@ -22,8 +27,13 @@
         {{form.retypePassword.label}}
         {{form.retypePassword(size=64)}}
     </p> -->
+<<<<<<< HEAD
  
     {{form.submit()}}
+=======
+
+  {{form.submit()}}
+>>>>>>> 114519de5b8a300ee28ae9c85a8296c5362c9461
 </form>
 
 {% endblock %}
