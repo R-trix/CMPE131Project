@@ -22,10 +22,10 @@ def main():
 	if user is logged in, it will reroute to the page
 	returns: render_template - main page's webpage info
     """
-    if current_user.is_authenticated:
-        return render_template("home.html")
-    else:
+    if (current_user.is_anonymous):
         return render_template("homeanon.html") #,user=current_user
+    else:
+        return render_template("home.html")
 
 @myobj.route("/login", methods=['GET', 'POST'])
 def login():
@@ -39,19 +39,19 @@ def login():
 
     if(form.validate_on_submit()):
 
-        #username = form.username.data
-        #password = form.password.data
-        #remember_me = form.remember_me.data
+        username = form.username.data
+        password = form.password.data
+        remember_me = form.remember_me.data
 
-        flash(
-            f'Login requested for user {form.username.data}, remember_me = {form.remember_me.data}')
+        flash(f'Login requested for user {form.username.data}, remember_me = {form.remember_me.data}')
         user = User.query.filter_by(username=username).first()
 
         if(user is None or not user.check_password(form.password.data)):
-            flash("sorry, the password you entered in incorrect. please try again.")
+            flash("Sorry, the username/password you entered in incorrect. Please try again.")
             return redirect("/login")
 
         login_user(user, remember=remember_me)
+        current_user.is_anonymous = False
         return redirect("/")
 
     return render_template("login.html", form=form)
@@ -82,6 +82,7 @@ def newacc():
     """
 
     form = RegisterForm()
+    
 
     if (form.validate_on_submit()):
 
@@ -97,7 +98,7 @@ def newacc():
             flash('Please try again.')
             return redirect("/createaccount")
 
-        user = User(username=username, email=email, password=password)
+        user = User(username=username, email=email, password=password, is_authenticated=False)
         db.session.add(user)
         db.session.commit()
         flash("Account is now created. You may log in now.")
@@ -162,13 +163,17 @@ def delete_acc():
     '''
     form = DeleteForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(username=session['username']).first()
+        username = form.username.data
+        
+        user = User.query.filter_by(username=username).first()
         if form.username.data == user.username:
-            session.pop('username', None)
+            #session.pop('username', None)
             db.session.delete(user)
             db.session.commit()
             flash("Account successfully deleted.")
             return redirect(url_for('index'))
+        
+        
     return render_template('delete.html', form=form)
 
 

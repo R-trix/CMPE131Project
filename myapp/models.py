@@ -20,7 +20,7 @@ class User(db.Model):
         self.set_password(password)
         self.email = email
         self.public = True
-        is_authenticated=False
+        self.is_authenticated=False
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(128), index=True, unique=True)
