@@ -20,7 +20,6 @@ while True:
     print(timer, end="\r")
     time.sleep(1)
     t -= 1
-    new lines to test of something was added
     
     test
 """

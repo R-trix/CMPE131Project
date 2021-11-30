@@ -242,8 +242,12 @@ def update(id):
     else:
         return render_template('update.html', task=task)
 
+<<<<<<< HEAD
 
 @myobj.route('/create_Notes', methods=['GET', 'POST'])
+=======
+@myobj.route('/create_Notes', methods = ['GET', 'POST'])
+>>>>>>> aac486813cc305705f9b0af701040aa2777c6751
 def create_notes():
     forms = markdown_notes()
     title = "Create Notes in markdown"
