@@ -5,18 +5,8 @@
 <form action="" method="POST" novalidate>
   {{form.hidden_tag()}}
 
-<<<<<<< HEAD
   <p>{{form.username.label}} {{form.username(size=32)}}</p>
-  <p>{{form.email.label}} {{form.email(size=64)}}</p>
-  <p>{{form.password.label}} {{form.password(size=64)}}</p>
-  <p>{{form.retypePassword.label}} {{form.retypePassword(size=64)}}</p>
-
-  {{form.submit()}}
-=======
-    <p>
-        {{form.username.label}}
-        {{form.username(size=32)}}
-    </p>
+  <!--
     <p>
         {{form.email.label}}
         {{form.email(size=64)}}
@@ -28,10 +18,9 @@
     <p>
         {{form.retypePassword.label}}
         {{form.retypePassword(size=64)}}
-    </p>
- 
-    {{form.submit()}}
->>>>>>> aac486813cc305705f9b0af701040aa2777c6751
+    </p> -->
+
+  {{form.submit()}}
 </form>
 
 {% endblock %}

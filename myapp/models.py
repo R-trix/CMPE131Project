@@ -97,8 +97,10 @@ class ToDo(db.Model):
     """ 
         todo database structure to keep track of tasks
     """
+    # table="parent"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     content = db.Column(db.String(128), nullable=False)
+   # parent_id=db.Column(Integer, ForeignKey("parent.id"))
 
     def __repr__(self):
         # return '<Task %r>' % self.id
