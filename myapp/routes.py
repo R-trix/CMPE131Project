@@ -221,7 +221,7 @@ def update(id):
     else:
         return render_template('update.html', task=task)
 
-@app_Obj.route('/create_Notes', methods = ['GET', 'POST'])
+@myobj.route('/create_Notes', methods = ['GET', 'POST'])
 def create_notes():
     forms = markdown_notes()
     title = "Create Notes in markdown"
