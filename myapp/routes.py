@@ -22,18 +22,10 @@ def main():
 
         returns: render_template - main page's webpage info
     """
-<<<<<<< HEAD
     if (current_user.is_anonymous):
         return render_template("homeanon.html") #,user=current_user
     else:
         return render_template("home.html")
-=======
-    if current_user.is_authenticated:
-        return render_template("home.html")
-    else:
-        return render_template("homeanon.html")  # ,user=current_user
-
->>>>>>> 114519de5b8a300ee28ae9c85a8296c5362c9461
 
 @myobj.route("/login", methods=['GET', 'POST'])
 def login():
