@@ -4,7 +4,7 @@ from myapp.models import User
 from myapp.models import ToDo
 
 from flask import render_template, flash, redirect, request
-from flask_login import login_user  # DOUBLE CHECK######
+from flask_login import login_user, logout_user, login_required, current_user ######DOUBLE CHECK######
 
 import time
 import tkinter as tk
@@ -18,13 +18,14 @@ import threading
 def main():
     """
         this will route the  primary directory of website to home.html
-        if user is not logged in, it will pass in the login form
-        if user is logged in, it will reroute to the page
-
-        returns: render_template - main page's webpage info
+	if user is not logged in, it will pass in the login form
+	if user is logged in, it will reroute to the page
+	returns: render_template - main page's webpage info
     """
-    return render_template("home.html")  # ,user=current_user
-
+    if current_user.is_authenticated:
+        return render_template("home.html")
+    else:
+        return render_template("homeanon.html") #,user=current_user
 
 @myobj.route("/login", methods=['GET', 'POST'])
 def login():
@@ -59,6 +60,7 @@ def login():
 
 
 @myobj.route("/logout")
+@login_required
 def logout():
     """
           this allows the user to logout. 
@@ -237,8 +239,12 @@ def update(id):
     else:
         return render_template('update.html', task=task)
 
+<<<<<<< HEAD
 
 @app_Obj.route('/create_Notes', methods=['GET', 'POST'])
+=======
+@myobj.route('/create_Notes', methods = ['GET', 'POST'])
+>>>>>>> b2764c1e3a8fc2118daa4cb09ab9ff4f1965f2a1
 def create_notes():
     forms = markdown_notes()
     title = "Create Notes in markdown"
