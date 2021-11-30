@@ -169,7 +169,7 @@ def delete_acc():
             db.session.commit()
             flash("Account successfully deleted.")
             return redirect(url_for('index'))
-    return render_template('delete-account.html', form=form)
+    return render_template('delete.html', form=form)
 
 
 @myobj.route("/todo", methods=["POST", "GET"])
@@ -239,12 +239,7 @@ def update(id):
     else:
         return render_template('update.html', task=task)
 
-<<<<<<< HEAD
-
-@app_Obj.route('/create_Notes', methods=['GET', 'POST'])
-=======
 @myobj.route('/create_Notes', methods = ['GET', 'POST'])
->>>>>>> b2764c1e3a8fc2118daa4cb09ab9ff4f1965f2a1
 def create_notes():
     forms = markdown_notes()
     title = "Create Notes in markdown"
