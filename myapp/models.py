@@ -9,7 +9,7 @@ class User(db.Model):
         user DB structure for storing into db
     """
 
-    def __init__(self, username, email, password, is_authenticated):
+    def __init__(self, username, email, password,):  # is_authenticated):
         """
         parameters:
                 email - string: user's email address; gets stored in a coulumn
@@ -20,7 +20,7 @@ class User(db.Model):
         self.set_password(password)
         self.email = email
         self.public = True
-        is_authenticated=False
+        # is_authenticated=False
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(128), index=True, unique=True)
@@ -94,6 +94,9 @@ class User(db.Model):
 
 
 class ToDo(db.Model):
+    """ 
+        todo database structure to keep track of tasks
+    """
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     content = db.Column(db.String(128), nullable=False)
 
@@ -101,8 +104,8 @@ class ToDo(db.Model):
         # return '<Task %r>' % self.id
         return f'<Task {self.id}>'
 
+
 class NoteCards(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
+    id = db.Column(db.Integer, primary_key=True)
     notes_name = db.Column(db.String(256))
     notes_description = db.Column(db.String(512))
-    

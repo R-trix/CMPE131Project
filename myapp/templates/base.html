@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <head>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
 
     {% block title %}{% endblock %}
   </head>
@@ -19,8 +22,12 @@
       <p>My Homepage</p>
       <a href="/">Home</a>
       <a href="/login">Login</a>
+      <a href="/createaccount">Create Account</a>
+      <a href="/deleteaccount">Delete Account</a>
+      <a href="/logout">Logout</a>
       <a href="/todo">ToDo</a>
     </div>
+
     {% block content %} {% endblock %}
   </body>
 </html>
