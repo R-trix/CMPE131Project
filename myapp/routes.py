@@ -103,15 +103,14 @@ def newacc():
 
     return render_template("newacc.html", form=form)
 
+
 @myobj.route('/stopwatch', methods=['GET', 'POST'])
 class MyTimer(threading.Thread):
 
-
     def __init__(self, t):
-        super(MyTimer,self).__init__()
+        super(MyTimer, self).__init__()
         self.txt = t
         self.running = True
-
 
     def run(self):
         while self.running:
@@ -122,38 +121,42 @@ mgui = tk.Tk()
 mgui.title('Test')
 
 txt = tk.Label(mgui, text="time")
-txt.grid(row=0,columnspan=2)
+txt.grid(row=0, columnspan=2)
 
 timer = None
+
 
 def time_convert(sec):
     elapsed = end - start
     result = "Time Taken: %02d:%02d:%02d:%02d" % (
-    elapsed.days, elapsed.seconds // 3600, elapsed.seconds // 60 % 60, elapsed.seconds % 60)
+        elapsed.days, elapsed.seconds // 3600, elapsed.seconds // 60 % 60, elapsed.seconds % 60)
 
 
 def cmd1():
     global start
     start = dt.now()
 
+
 def cmd2():
     end = dt.now()
     elapsed = end - start
     result = "Time Taken: %02d:%02d:%02d:%02d" % (
-    elapsed.days, elapsed.seconds // 3600, elapsed.seconds // 60 % 60, elapsed.seconds % 60)
+        elapsed.days, elapsed.seconds // 3600, elapsed.seconds // 60 % 60, elapsed.seconds % 60)
     print(result)
 
-btn = tk.Button(mgui, text="Start", command =cmd1)
-btn.grid(row=1,column=1)
-btn2 = tk.Button(mgui, text="Stop", command =cmd2)
-btn2.grid(row=1,column=2)
+
+btn = tk.Button(mgui, text="Start", command=cmd1)
+btn.grid(row=1, column=1)
+btn2 = tk.Button(mgui, text="Stop", command=cmd2)
+btn2.grid(row=1, column=2)
 
 mgui.mainloop()
+
 
 @myobj.route('/deleteaccount', methods=['GET', 'POST'])
 def delete_acc():
     '''
-    Deletes user from database
+        Deletes user from database
     '''
     form = DeleteForm()
     if form.validate_on_submit():
@@ -169,6 +172,11 @@ def delete_acc():
 
 @myobj.route("/todo", methods=["POST", "GET"])
 def todo():
+    """ 
+        This todo feature allows users to create a todo list to keep track of their tasks
+
+        returns: will return mainpage or task creation form 
+    """
     if request.method == "POST":
         task_content = request.form["content"]
         #new_task = Todo(content=task_content)
@@ -192,6 +200,11 @@ def todo():
 
 @myobj.route("/delete/<int:id>")
 def delete(id):
+    """ 
+        This feature allows user to delete an item they have added to their todo task list
+
+        returns: will return mainpage or task creation form 
+    """
     # task_to_delete=Todo.query.get_or_404(id)
     task_to_delete = todo.query.get_or_404(id)
     try:
@@ -204,6 +217,11 @@ def delete(id):
 
 @myobj.route("/update/<int:id>", methods=["GET", "POST"])
 def update(id):
+    """ 
+        This feature allows user to update an item they have added to their todo task list
+
+        returns: will return update task form 
+    """
     # task=Todo.query.get_or_404(id)
     task = todo.query.get_or_404(id)
 
@@ -219,19 +237,21 @@ def update(id):
     else:
         return render_template('update.html', task=task)
 
-@app_Obj.route('/create_Notes', methods = ['GET', 'POST'])
+
+@app_Obj.route('/create_Notes', methods=['GET', 'POST'])
 def create_notes():
     forms = markdown_notes()
     title = "Create Notes in markdown"
 
     if form.validate_on_submit():
-        new_note = NoteCards(notes_name = form.notes_name.data, notes_description = form.notes_description.data)
+        new_note = NoteCards(notes_name=form.notes_name.data,
+                             notes_description=form.notes_description.data)
         try:
             db.session.add(new_note)
             db.session.commit()
             return redirect('/create_Notes')
         except:
-            return flash ('Error: Unable to save Notes!')
+            return flash('Error: Unable to save Notes!')
     else:
         notecards = NoteCards.query.all()
-        return render_template('notecard.html',form=form, notecards=notecards,title=title)
+        return render_template('notecard.html', form=form, notecards=notecards, title=title)
