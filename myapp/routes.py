@@ -45,13 +45,16 @@ def login():
         password = form.password.data
         remember_me = form.remember_me.data
 
-        flash(
-            f'Login requested for user {form.username.data}, remember_me = {form.remember_me.data}')
+        flash(f'Login requested for user {form.username.data}')
         user = User.query.filter_by(username=username).first()
 
-        if(user is None or not user.check_password(form.password.data)):
+        if(user is None):
             flash(
-                "Sorry, the username/password you entered in incorrect. Please try again.")
+                "Sorry, the username you entered doesn't exist. Please create an account.")
+            return redirect("/login")
+
+        if(not user.check_password(form.password.data)):
+            flash("Sorry, the password you entered in incorrect. Please try again.")
             return redirect("/login")
 
         login_user(user, remember=remember_me)
