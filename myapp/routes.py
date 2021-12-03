@@ -1,6 +1,8 @@
 #from flask import Flask
 from myapp import myobj, db
+
 from myapp.forms import LoginForm, RegisterForm, DeleteForm
+
 from myapp.models import User
 from myapp.models import Task
 from myapp.models import FlashCard
@@ -227,7 +229,7 @@ def cardview():
     return render_template("cardview.html", cards_all=cards_all, form=form)
 
 
-@myobj.route("/task", methods=["POST", "GET"])
+@myobj.route("/task", methods=["POST", "GET"]) #----------TASK FUNCTION NOT APPLICABLE TO SPECIFIC USERS-----------
 def list_tasks():
     tasks = Task.query.all()
     return render_template("todo.html", tasks=tasks)

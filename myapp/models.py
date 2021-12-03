@@ -25,6 +25,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(128), index=True, unique=True)
     email = db.Column(db.String(128), index=True, unique=True)
     public = db.Column(db.Boolean, index=True)
+    tasks = db.relationship('Task', backref='user', lazy='dynamic')
 
     password_hash = db.Column(db.String(128))
 
@@ -106,6 +107,7 @@ class Task(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text)
     done = db.Column(db.Boolean, default=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __init__(self, content):
         self.content = content
