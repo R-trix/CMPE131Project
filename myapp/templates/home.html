@@ -1,11 +1,12 @@
 {% extends "base.html" %} {% block content %}
-<h1> <i> Logged in html </i> </h1>
-<h1>Hello 
+
+<h1>
     {% if current_user.is_authenticated %} 
      <h2> Hi {{ current_user.username }}! </h2>
     {% endif %}
-    Welcome to The Daily 7!
 </h1>
+
+<h1> Welcome to The Daily 7! </h1>
 
 <h2><a href="/logout">Logout</a></h2>
 
