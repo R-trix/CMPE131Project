@@ -1,4 +1,4 @@
-#from myapp import routes
+from myapp import routes
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 #app.config['SQLALCHEMY_DATABASE_URI']= 'sqlite:///test.db'
@@ -14,7 +14,9 @@ myobj.config.from_mapping(
     SECRET_KEY='you-will-know',
     # location of sqlite databse
     SQLALCHEMT_DATABASE_URI='sqlite:///' + os.path.join(basedir, 'app.db'),
-    SQLALCHEMY_TRACK_MODIFICATIONS=False
+    # SQLALCHEMY_TRACK_MODIFICATIONS=False
+    SQLALCHEMY_TRACK_MODIFICATIONS=True
+    # db = SQLAlchemy(myobj)
 )
 
 
@@ -23,7 +25,3 @@ db = SQLAlchemy(myobj)
 login = LoginManager(myobj)
 # right side is function which  gets called to login  users
 login.login_view = 'login'
-
-
-
-from myapp import routes
