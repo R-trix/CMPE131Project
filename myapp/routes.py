@@ -185,6 +185,7 @@ def delete_acc():
 
 
 @myobj.route("/createcard", methods=["POST", "GET"])
+#@login_required
 def createcard():
     """ 
         This feature will let users create flashcards.
@@ -211,6 +212,7 @@ def createcard():
 
 
 @myobj.route("/cardview", methods=["POST", "GET"])
+#@login_required
 def cardview():
     """
        outputs a page which displays all the flashcards

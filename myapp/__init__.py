@@ -14,7 +14,7 @@ myobj.config.from_mapping(
     SECRET_KEY='you-will-know',
     # location of sqlite databse
     SQLALCHEMT_DATABASE_URI='sqlite:///' + os.path.join(basedir, 'app.db'),
-    SQLALCHEMY_TRACK_MODIFICATIONS=False
+    SQLALCHEMY_TRACK_MODIFICATIONS=True
 )
 
 
