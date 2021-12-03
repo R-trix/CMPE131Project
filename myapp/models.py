@@ -9,7 +9,7 @@ class User(db.Model, UserMixin):
         user DB structure for storing into db
     """
 
-    def __init__(self, username, email, password): #, is_authenticated):
+    def __init__(self, username, email, password):  # , is_authenticated):
         """
         parameters:
                 email - string: user's email address; gets stored in a coulumn
@@ -100,8 +100,17 @@ class ToDo(db.Model, UserMixin):
         # return '<Task %r>' % self.id
         return f'<Task {self.id}>'
 
+
 class NoteCards(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key = True)
+    id = db.Column(db.Integer, primary_key=True)
     notes_name = db.Column(db.String(256))
     notes_description = db.Column(db.String(512))
-    
+
+
+class FlashCard(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    term = db.Column(db.String(64), index=True, unique=True)
+    definition = db.Column(db.String(128), index=True, unique=True)
+
+    def __repr__(self):
+        return f'Term: {self.term}, Definition: {self.definition}'

@@ -1,0 +1,23 @@
+h1 {
+  text-align: center;
+  color: rgb(51, 4, 4);
+}
+
+p {
+  text-align: center;
+  color: rgb(9, 9, 65);
+}
+
+body {
+  background-color: rgb(255, 255, 255);
+}
+
+li {
+  text-align: center;
+  color: white;
+}
+
+a {
+  text-align: center;
+  color: white;
+}

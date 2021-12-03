@@ -2,6 +2,7 @@ from myapp import myobj, db
 from myapp.forms import LoginForm, RegisterForm, DeleteForm
 from myapp.models import User
 from myapp.models import ToDo
+from myapp.models import FlashCard
 
 from flask import render_template, flash, redirect, request
 # DOUBLE CHECK######
@@ -23,9 +24,10 @@ def main():
         returns: render_template - main page's webpage info
     """
     if (current_user.is_anonymous):
-        return render_template("homeanon.html") #,user=current_user
+        return render_template("homeanon.html")  # ,user=current_user
     else:
-        return render_template("home.html", current_user = current_user)
+        return render_template("home.html", current_user=current_user)
+
 
 @myobj.route("/login", methods=['GET', 'POST'])
 def login():
@@ -43,11 +45,13 @@ def login():
         password = form.password.data
         remember_me = form.remember_me.data
 
-        flash(f'Login requested for user {form.username.data}, remember_me = {form.remember_me.data}')
+        flash(
+            f'Login requested for user {form.username.data}, remember_me = {form.remember_me.data}')
         user = User.query.filter_by(username=username).first()
 
         if(user is None or not user.check_password(form.password.data)):
-            flash("Sorry, the username/password you entered in incorrect. Please try again.")
+            flash(
+                "Sorry, the username/password you entered in incorrect. Please try again.")
             return redirect("/login")
 
         login_user(user, remember=remember_me)
@@ -83,7 +87,6 @@ def newacc():
     """
 
     form = RegisterForm()
-    
 
     if (form.validate_on_submit()):
 
@@ -165,7 +168,7 @@ def delete_acc():
     form = DeleteForm()
     if form.validate_on_submit():
         username = form.username.data
-        
+
         user = User.query.filter_by(username=username).first()
         if form.username.data == user.username:
             #session.pop('username', None)
@@ -173,9 +176,34 @@ def delete_acc():
             db.session.commit()
             flash("Account successfully deleted.")
             return redirect(url_for('index'))
-        
-        
+
     return render_template('delete.html', form=form)
+
+
+@myobj.route("/createcard", methods=["POST", "GET"])
+def createcard():
+    """ 
+        This feature will let users create flashcards.
+
+    Returns:
+        render_template: webpage will ask user to input a word & its definition in a box in order for the flashcard to be created. 
+        A button will enter the flashcard into the database
+    """
+    form = FlashCard()
+    # once user hits submit, flashcard will be created and be added into the database
+    if form.validate_on_submit():
+        flash("Added flashcard.")
+        card = FlashCard(card_term=form.card_term.data,
+                         card_def=form.card_def.data)
+        db.session.add(card)
+        db.session.commit()
+
+        # the flashcard will be under the user's account if they are signed in
+        if current_user.is_authenticated == True:
+            card.Users.append(current_user)
+            db.session.commit()
+        return redirect("/createcard")
+    return render_template("newcard.html", form=form)
 
 
 @myobj.route("/todo", methods=["POST", "GET"])

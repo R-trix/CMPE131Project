@@ -55,6 +55,13 @@ class markdown_notes(FlaskForm):
     save_notes = SubmitField('Save Notes')
 
 
+class FlashCard(FlaskForm):
+    term = StringField('Term', validators=[DataRequired()])
+    definition = StringField('Definition', validators=[DataRequired()])
+
+    submit = SubmitField("Submit")
+
+
 """ 
 <form action="/" method="POST">
         <input type="text" name="content" id="content">
