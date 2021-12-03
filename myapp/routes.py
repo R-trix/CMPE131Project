@@ -209,6 +209,21 @@ def createcard():
     return render_template("newcard.html", form=form)
 
 
+@myobj.route("/cardview", methods=["POST", "GET"])
+def cardview():
+    """
+       outputs a page which displays all the flashcards
+
+    Returns:
+        render_template: prints all the cards created by the user 
+    """
+    cards_all = []
+    # flashcards created by the user will get pushed to the cards_all list
+    for card in current_user.usercards:
+        cards_all.append(card)
+    return render_template("cardview.html", cards_all=cards_all, form=form)
+
+
 @myobj.route("/todo", methods=["POST", "GET"])
 def todo():
     """ 
