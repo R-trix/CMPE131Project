@@ -1,6 +1,8 @@
 #from flask import Flask
 from myapp import myobj, db
+
 from myapp.forms import LoginForm, RegisterForm, DeleteForm
+
 from myapp.models import User
 from myapp.models import Task
 from myapp.models import FlashCard
