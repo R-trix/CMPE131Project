@@ -1,7 +1,8 @@
+#from flask import Flask
 from myapp import myobj, db
 from myapp.forms import LoginForm, RegisterForm, DeleteForm
 from myapp.models import User
-from myapp.models import ToDo
+from myapp.models import Task
 from myapp.models import FlashCard
 
 from flask import render_template, flash, redirect, request
@@ -224,13 +225,59 @@ def cardview():
     return render_template("cardview.html", cards_all=cards_all, form=form)
 
 
+@myobj.route("/task", methods=["POST", "GET"])
+def list_tasks():
+    tasks = Task.query.all()
+    return render_template("todo.html", tasks=tasks)
+
+
+@myobj.route("/addtask", methods=["POST", "GET"])
+def task_add():
+    content = request.form['content']
+    if not content:
+        return "Sorry, please try again"
+
+    task = Task(content)
+    db.session.add(task)
+    db.session.commit()
+
+    return redirect("/task")
+
+
+@myobj.route("/delete/<int:task_id>")
+def task_delete(task_id):
+    task = Task.query.get(task_id)
+    if not task:
+        return redirect("/task")
+
+    db.session.delete(task)
+    db.session.commit()
+    return redirect("/task")
+
+
+@myobj.route("/done/<int:task_id>")
+def task_done(task_id):
+    task = Task.query.get(task_id)
+
+    if not task:
+        return redirect("/task")
+    if task.done:
+        task.done = False
+    else:
+        task.done = True
+
+    db.session.commit()
+    return redirect("/task")
+
+
+"""
 @myobj.route("/todo", methods=["POST", "GET"])
 def todo():
-    """ 
-        This todo feature allows users to create a todo list to keep track of their tasks
-
-        returns: will return mainpage or task creation form 
     """
+# This todo feature allows users to create a todo list to keep track of their tasks
+
+# returns: will return mainpage or task creation form
+"""
     if request.method == "POST":
         task_content = request.form["content"]
         #new_task = Todo(content=task_content)
@@ -255,11 +302,11 @@ def todo():
 # @myobj.route("/delete/<int:id>")
 @myobj.route("/delete", methods=["GET", "POST"])
 def delete(id):
-    """ 
-        This feature allows user to delete an item they have added to their todo task list
-
-        returns: will return mainpage or task creation form 
     """
+# This feature allows user to delete an item they have added to their todo task list
+
+# returns: will return mainpage or task creation form
+"""
     # task_to_delete=Todo.query.get_or_404(id)
     task_to_delete = todo.query.get_or_404(id)
     try:
@@ -272,11 +319,11 @@ def delete(id):
 
 @myobj.route("/update", methods=["GET", "POST"])
 def update(id):
-    """ 
-        This feature allows user to update an item they have added to their todo task list
-
-        returns: will return update task form 
     """
+#   This feature allows user to update an item they have added to their todo task list
+
+#   returns: will return update task form
+"""
     # task=Todo.query.get_or_404(id)
     task = todo.query.get_or_404(id)
 
@@ -291,6 +338,7 @@ def update(id):
 
     else:
         return render_template('update.html', task=task)
+"""
 
 
 @myobj.route('/create_Notes', methods=['GET', 'POST'])
