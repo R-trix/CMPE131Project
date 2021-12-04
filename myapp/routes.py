@@ -187,6 +187,7 @@ def delete_acc():
 
 
 @myobj.route("/createcard", methods=["POST", "GET"])
+#@login_required
 def createcard():
     """ 
         This feature will let users create flashcards.
@@ -213,6 +214,7 @@ def createcard():
 
 
 @myobj.route("/cardview", methods=["POST", "GET"])
+#@login_required
 def cardview():
     """
        outputs a page which displays all the flashcards
@@ -227,7 +229,7 @@ def cardview():
     return render_template("cardview.html", cards_all=cards_all, form=form)
 
 
-@myobj.route("/task", methods=["POST", "GET"])
+@myobj.route("/task", methods=["POST", "GET"]) #----------TASK FUNCTION NOT APPLICABLE TO SPECIFIC USERS-----------
 def list_tasks():
     tasks = Task.query.all()
     return render_template("todo.html", tasks=tasks)
