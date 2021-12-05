@@ -21,6 +21,7 @@ myobj.config.from_mapping(
 
 
 db = SQLAlchemy(myobj)
+db.create_all()
 
 login = LoginManager(myobj)
 # right side is function which  gets called to login  users

@@ -11,7 +11,58 @@
     {% block title %}{% endblock %}
   </head>
 
+
+
   <body>
+
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark" aria-label="Third navbar example">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Expand at sm</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample03" aria-controls="navbarsExample03" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+  
+        <div class="collapse navbar-collapse" id="navbarsExample03">
+          <ul class="navbar-nav me-auto mb-2 mb-sm-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled">Disabled</a>
+            </li>
+
+            <!-- account dropdown-->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">Account</a>
+              <ul class="dropdown-menu" aria-labelledby="dropdown03">
+                <li><a class="dropdown-item" href="/createaccount"> Create Account</a></li>
+                <li><a class="dropdown-item" href="/login">Login</a></li>
+                <li><a class="dropdown-item" href="/logout">Sign Out</a></li>
+              </ul>
+            </li>
+
+            <!-- Features dropdown-->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">Features</a>
+              <ul class="dropdown-menu" aria-labelledby="dropdown03">
+                <li><a class="dropdown-item" href="/task">Todo Tracker</a></li>
+                <li><a class="dropdown-item" href="/createcard">Create Flash Cards</a></li>
+                <li><a class="dropdown-item" href="/cardview">View All Cards</a></li>
+                <li><a class="dropdown-item" href="/practice">Practice </a></li>
+              </ul>
+            </li>
+
+          </ul>
+          <form>
+            <input class="form-control" type="text" placeholder="Search" aria-label="Search">
+          </form>
+        </div>
+      </div>
+    </nav>
+
     {% with messages = get_flashed_messages() %} {% if messages %}
     <ul>
       {% for message in messages %}
@@ -22,12 +73,14 @@
 
     <div>
       <p>My Homepage</p>
-      <a href="/">Home</a>
+     <!--  <a href="/">Home </a> 
+      <a href="/login">Login </a>
+      <a href="/createaccount">Create Account </a> -->
+<!--       
       <a href="/task">ToDo Tracker</a>
-      <a href="/createaccount">Create Account </a>
       <a href="/createcard">Create Flash Cards</a>
       <a href="/cardview">Card View</a>
-      <a href="/practice">Practice Time!</a>
+      <a href="/practice">Practice Time!</a> -->
     </div>
 
     {% block content %} {% endblock %}
