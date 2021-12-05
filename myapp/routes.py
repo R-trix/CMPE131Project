@@ -117,73 +117,15 @@ def newacc():
     return render_template("newacc.html", form=form)
 
 
-@myobj.route('/stopwatch', methods=['GET', 'POST'])
-class MyTimer(threading.Thread):
+@myobj.route("/stopwatch")
+  def stopwatch():
+      """
+       outputs a stopwatch for timing
 
-    def __init__(self, t):
-        super(MyTimer, self).__init__()
-        self.txt = t
-        self.running = True
-
-    def run(self):
-        while self.running:
-            self.txt['text'] = time.time()
-
-
-mgui = tk.Tk()
-mgui.title('Test')
-
-txt = tk.Label(mgui, text="time")
-txt.grid(row=0, columnspan=2)
-
-timer = None
-
-
-def time_convert(sec):
-    elapsed = end - start
-    result = "Time Taken: %02d:%02d:%02d:%02d" % (
-        elapsed.days, elapsed.seconds // 3600, elapsed.seconds // 60 % 60, elapsed.seconds % 60)
-
-
-def cmd1():
-    global start
-    start = dt.now()
-
-
-def cmd2():
-    end = dt.now()
-    elapsed = end - start
-    result = "Time Taken: %02d:%02d:%02d:%02d" % (
-        elapsed.days, elapsed.seconds // 3600, elapsed.seconds // 60 % 60, elapsed.seconds % 60)
-    print(result)
-
-
-btn = tk.Button(mgui, text="Start", command=cmd1)
-btn.grid(row=1, column=1)
-btn2 = tk.Button(mgui, text="Stop", command=cmd2)
-btn2.grid(row=1, column=2)
-
-mgui.mainloop()
-
-
-@myobj.route('/deleteaccount', methods=['GET', 'POST'])
-def delete_acc():
-    '''
-        Deletes user from database
-    '''
-    form = DeleteForm()
-    if form.validate_on_submit():
-        username = form.username.data
-
-        user = User.query.filter_by(username=username).first()
-        if form.username.data == user.username:
-            #session.pop('username', None)
-            db.session.delete(user)
-            db.session.commit()
-            flash("Account successfully deleted.")
-            return redirect(url_for('index'))
-
-    return render_template('delete.html', form=form)
+    Returns:
+        render_template: returns stopwatch to use for students.
+    """
+    return render_template("stopwatch.html")
 
 
 @myobj.route("/createcard", methods=["POST", "GET"])
