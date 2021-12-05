@@ -1,13 +1,13 @@
 #from flask import Flask
 from myapp import myobj, db
 
-from myapp.forms import LoginForm, RegisterForm, DeleteForm, SearchForm, Practice
+from myapp.forms import LoginForm, RegisterForm, DeleteForm, SearchForm, Practice, FlashCard
 
 from myapp.models import User
 from myapp.models import Task
 from myapp.models import FlashCard
 
-from flask import render_template, flash, redirect, request
+from flask import render_template, flash, redirect, request 
 # DOUBLE CHECK######
 from flask_login import login_user, logout_user, login_required, current_user, UserMixin
 
@@ -141,9 +141,9 @@ def createcard():
     form = FlashCard()
     # once user hits submit, flashcard will be created and be added into the database
     if form.validate_on_submit():
-        flash("Added flashcard.")
-        card = FlashCard(card_term=form.card_term.data,
-                         card_def=form.card_def.data)
+        #flash("Added flashcard.")
+        card = FlashCard(term=form.term.data,
+                         definition=form.definition.data)
         db.session.add(card)
         db.session.commit()
 
@@ -239,7 +239,7 @@ def create_notes():
         notecards = NoteCards.query.all()
         return render_template('notecard.html', form=form, notecards=notecards, title=title)
 
-
+"""
 @myobj.route("/search", methods=['GET', 'POST'])
 @login_required
 def search():
@@ -252,8 +252,9 @@ def search():
 @myobj.route("/searchres/<query>")
 @login_required
 def search_result(query):
-    results = User.query.whoosh_Search(query).all()
+    results = User.query.whoosh_search(query).all()
     return render_template("searchres.html", query=query, results=results)
+""" 
 
 # Change order of flash cards based on how often user got answer correct
 
