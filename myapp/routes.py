@@ -14,9 +14,9 @@ from flask_login import login_user, logout_user, login_required, current_user, U
 import random 
 from random import shuffle
 
-import time
-import tkinter as tk
-from datetime import datetime as dt
+#import time
+#import tkinter as tk
+#from datetime import datetime as dt
 
 import threading
 #from myapp import login
