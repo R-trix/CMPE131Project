@@ -118,7 +118,7 @@ def newacc():
 
 
 @myobj.route("/stopwatch")
-  def stopwatch():
+def stopwatch():
       """
        outputs a stopwatch for timing
 
