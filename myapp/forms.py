@@ -62,6 +62,19 @@ class FlashCard(FlaskForm):
     submit = SubmitField("Submit")
 
 
+class SearchForm(FlaskForm):
+    search = StringField('Search', validators=[DataRequired()])
+
+    submit = SubmitField("Submit", render_kw={
+                         'class': 'btn btn-success btn-block'})
+
+
+class Practice(FlaskForm):
+    ans = StringField('Answer', validators=[DataRequired()])
+
+    submit = SubmitField("Submit")
+
+
 """ 
 <form action="/" method="POST">
         <input type="text" name="content" id="content">

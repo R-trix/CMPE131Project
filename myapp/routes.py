@@ -1,7 +1,7 @@
 #from flask import Flask
 from myapp import myobj, db
 
-from myapp.forms import LoginForm, RegisterForm, DeleteForm
+from myapp.forms import LoginForm, RegisterForm, DeleteForm, SearchForm, Practice
 
 from myapp.models import User
 from myapp.models import Task
@@ -187,7 +187,7 @@ def delete_acc():
 
 
 @myobj.route("/createcard", methods=["POST", "GET"])
-#@login_required
+@login_required
 def createcard():
     """ 
         This feature will let users create flashcards.
@@ -214,7 +214,7 @@ def createcard():
 
 
 @myobj.route("/cardview", methods=["POST", "GET"])
-#@login_required
+@login_required
 def cardview():
     """
        outputs a page which displays all the flashcards
@@ -229,13 +229,16 @@ def cardview():
     return render_template("cardview.html", cards_all=cards_all, form=form)
 
 
-@myobj.route("/task", methods=["POST", "GET"]) #----------TASK FUNCTION NOT APPLICABLE TO SPECIFIC USERS-----------
+# ----------TASK FUNCTION NOT APPLICABLE TO SPECIFIC USERS-----------
+@myobj.route("/task", methods=["POST", "GET"])
+@login_required
 def list_tasks():
     tasks = Task.query.all()
     return render_template("todo.html", tasks=tasks)
 
 
 @myobj.route("/addtask", methods=["POST", "GET"])
+@login_required
 def task_add():
     content = request.form['content']
     if not content:
@@ -249,6 +252,7 @@ def task_add():
 
 
 @myobj.route("/delete/<int:task_id>")
+@login_required
 def task_delete(task_id):
     task = Task.query.get(task_id)
     if not task:
@@ -260,6 +264,7 @@ def task_delete(task_id):
 
 
 @myobj.route("/done/<int:task_id>")
+@login_required
 def task_done(task_id):
     task = Task.query.get(task_id)
 
@@ -272,6 +277,87 @@ def task_done(task_id):
 
     db.session.commit()
     return redirect("/task")
+
+
+@myobj.route('/create_Notes', methods=['GET', 'POST'])
+def create_notes():
+    forms = markdown_notes()
+    title = "Create Notes in markdown"
+
+    if form.validate_on_submit():
+        new_note = NoteCards(notes_name=form.notes_name.data,
+                             notes_description=form.notes_description.data)
+        try:
+            db.session.add(new_note)
+            db.session.commit()
+            return redirect('/create_Notes')
+        except:
+            return flash('Error: Unable to save Notes!')
+    else:
+        notecards = NoteCards.query.all()
+        return render_template('notecard.html', form=form, notecards=notecards, title=title)
+
+
+@myobj.route("/search", methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if request.method == 'POST' and form.validate_on_submit():
+        return redirect("/searchres", query=form.search.data)
+    return render_template('search.html', form=form)
+
+
+@myobj.route("/searchres/<query>")
+@login_required
+def search_result(query):
+    results = User.query.whoosh_Search(query).all()
+    return render_template("searchres.html", query=query, results=results)
+
+# Change order of flash cards based on how often user got answer correct
+
+
+@myobj.route("/practice", methods=["POST", "GET"])
+@login_required
+def practice():
+    """
+        with this feature, the user can practice preparing for the quiz/test with the flashcards they have created
+
+    Returns:
+        render_template: feature will mix the cardsets so user can prepare for their quiz/test. the page should keep track of the correct/incorrect answers of the user. 
+    """
+    form = Practice()
+    cards_all = FlashCard.query.all()
+
+    qsList = []
+    ansList = []
+
+    correct = 0
+    incorrect = 0
+
+    # to mix:
+    random.shuffle(cards_all)
+
+    for card in cards_all:
+        qsList.append(card.term)
+
+    for card in cards_all:
+        ansList.append(card.definition)
+
+    if form.validate_on_submit():
+        card_index = 0
+        while card_index <= len(qsList):
+            if form.ans == qsList[card_index]:
+                correct += 1
+            else:
+                incorrect += 1
+
+            card_index + 1
+
+        total_correct = correct/len(qsList)
+        total_incorrect = incorrect/len(qsList)
+
+        # return redirect("/score", total_correct = total_correct, total_incorrect=total_incorrect)
+    return render_template("practice.html", form=form, qsList=qsList)
 
 
 """
@@ -343,22 +429,3 @@ def update(id):
     else:
         return render_template('update.html', task=task)
 """
-
-
-@myobj.route('/create_Notes', methods=['GET', 'POST'])
-def create_notes():
-    forms = markdown_notes()
-    title = "Create Notes in markdown"
-
-    if form.validate_on_submit():
-        new_note = NoteCards(notes_name=form.notes_name.data,
-                             notes_description=form.notes_description.data)
-        try:
-            db.session.add(new_note)
-            db.session.commit()
-            return redirect('/create_Notes')
-        except:
-            return flash('Error: Unable to save Notes!')
-    else:
-        notecards = NoteCards.query.all()
-        return render_template('notecard.html', form=form, notecards=notecards, title=title)
