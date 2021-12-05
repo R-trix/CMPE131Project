@@ -1,4 +1,5 @@
 #from flask import Flask
+from os import urandom
 from myapp import myobj, db
 
 from myapp.forms import LoginForm, RegisterForm, DeleteForm, SearchForm, Practice, FlashCard
@@ -10,6 +11,8 @@ from myapp.models import FlashCard
 from flask import render_template, flash, redirect, request 
 # DOUBLE CHECK######
 from flask_login import login_user, logout_user, login_required, current_user, UserMixin
+import random 
+from random import shuffle
 
 import time
 import tkinter as tk
@@ -119,7 +122,8 @@ def newacc():
 
 @myobj.route("/stopwatch")
 def stopwatch():
-      """
+    
+    """
        outputs a stopwatch for timing
 
     Returns:
@@ -142,8 +146,7 @@ def createcard():
     # once user hits submit, flashcard will be created and be added into the database
     if form.validate_on_submit():
         #flash("Added flashcard.")
-        card = FlashCard(term=form.term.data,
-                         definition=form.definition.data)
+        card = FlashCard(term=form.term.data, definition=form.definition.data)
         db.session.add(card)
         db.session.commit()
 
@@ -166,12 +169,13 @@ def cardview():
     """
     cards_all = []
     # flashcards created by the user will get pushed to the cards_all list
-    for card in current_user.usercards:
+    for card in current_user.usercard:
         cards_all.append(card)
-    return render_template("cardview.html", cards_all=cards_all, form=form)
+  #  return render_template("cardview.html", cards_all=cards_all, '''form=form''')
+    return render_template("cardview.html", cards_all=cards_all)
 
 
-# ----------TASK FUNCTION NOT APPLICABLE TO SPECIFIC USERS-----------
+
 @myobj.route("/task", methods=["POST", "GET"])
 @login_required
 def list_tasks():
