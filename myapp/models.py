@@ -26,6 +26,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(128), index=True, unique=True)
     public = db.Column(db.Boolean, index=True)
     tasks = db.relationship('Task', backref='user', lazy='dynamic')
+    notes = db.relationship('Note', backref='user', lazy='dynamic')
 
     password_hash = db.Column(db.String(128))
 
@@ -121,6 +122,7 @@ class NoteCards(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     notes_name = db.Column(db.String(256))
     notes_description = db.Column(db.String(512))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 
 class FlashCard(db.Model, UserMixin):
