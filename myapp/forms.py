@@ -47,7 +47,37 @@ class DeleteForm(FlaskForm):
     confirm = BooleanField(
         "Are you sure you would like to delete your account permanently?")
 
+
 class markdown_notes(FlaskForm):
-    notes_name = StringField( 'Name', validators = [DataRequired()])
-    note_description = StringField('Note Description', validators = [DataRequired()], widget=TextArea() ,render_kw={'style': 'width: 500px'},)
+    notes_name = StringField('Name', validators=[DataRequired()])
+    note_description = StringField('Note Description', validators=[
+                                   DataRequired()], widget=TextArea(), render_kw={'style': 'width: 500px'})
     save_notes = SubmitField('Save Notes')
+
+
+class FlashCard(FlaskForm):
+    term = StringField('Term', validators=[DataRequired()])
+    definition = StringField('Definition', validators=[DataRequired()])
+
+    submit = SubmitField("Submit")
+
+
+class SearchForm(FlaskForm):
+    search = StringField('Search', validators=[DataRequired()])
+
+    submit = SubmitField("Submit", render_kw={
+                         'class': 'btn btn-success btn-block'})
+
+
+class Practice(FlaskForm):
+    ans = StringField('Answer', validators=[DataRequired()])
+
+    submit = SubmitField("Submit")
+
+
+""" 
+<form action="/" method="POST">
+        <input type="text" name="content" id="content">
+        <input type="submit" value="Add Task">
+</form>
+"""

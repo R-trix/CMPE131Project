@@ -1,0 +1,32 @@
+{% extends "base.html" %} {% block styles %} {{super()}}
+<link rel="stylesheet" href="{{url_for('.static', filename='newcard.css')}}" />
+{% endblock %} {% block content %}
+<html>
+  <head>
+    <title>Enter Flashcard</title>
+  </head>
+  <body>
+    {% with messages = get_flashed_messages() %} {% if messages %}
+    <ul>
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %} {% endwith %}
+
+    <h1>Enter flashcard information here</h1>
+    <form action="" method="POST" novalidate>
+      {{ form.hidden_tag() }}
+      <p>
+        {{ form.card_term.label }} <br />
+        {{ form.card_term(size=128) }}
+      </p>
+      <p>
+        {{ form.card_def.label }} <br />
+        {{ form.card_def(size=128) }}
+      </p>
+      <p>{{ form.submit() }}</p>
+    </form>
+  </body>
+</html>
+{% endblock %}

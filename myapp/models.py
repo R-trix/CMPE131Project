@@ -1,15 +1,16 @@
 from myapp import db
 from myapp import login
-from flask_login import current_user
+from flask_login import current_user, UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
+from flask_whooshalchemy import whoosh_index
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     """
         user DB structure for storing into db
     """
 
-    def __init__(self, username, email, password):
+    def __init__(self, username, email, password):  # , is_authenticated):
         """
         parameters:
                 email - string: user's email address; gets stored in a coulumn
@@ -25,6 +26,7 @@ class User(db.Model):
     username = db.Column(db.String(128), index=True, unique=True)
     email = db.Column(db.String(128), index=True, unique=True)
     public = db.Column(db.Boolean, index=True)
+    tasks = db.relationship('Task', backref='user', lazy='dynamic')
 
     password_hash = db.Column(db.String(128))
 
@@ -52,7 +54,6 @@ class User(db.Model):
 
 
 # some stuff goes here
-
 
     @staticmethod
     def check_valid_credentials(username, email, password, retypePassword):
@@ -92,16 +93,48 @@ class User(db.Model):
 # for the todo list thing
 
 
-class ToDo(db.Model):
+"""
+class ToDo(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     content = db.Column(db.String(128), nullable=False)
 
     def __repr__(self):
         # return '<Task %r>' % self.id
-        return f'<Task {self.id}>'
+        return f'<Task {self.id}>' """
 
-class NoteCards(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
+
+class Task(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.Text)
+    done = db.Column(db.Boolean, default=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    def __init__(self, content):
+        self.content = content
+        self.done = False
+
+    def __repr__(self):
+        return '<Content %s>' % self.content
+
+
+class NoteCards(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
     notes_name = db.Column(db.String(256))
     notes_description = db.Column(db.String(512))
-    
+
+
+class FlashCard(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    term = db.Column(db.String(64), index=True, unique=True)
+    definition = db.Column(db.String(128), index=True, unique=True)
+
+    def __repr__(self):
+        return f'Term: {self.term}, Definition: {self.definition}'
+
+
+class Search(db.Model, UserMixin):
+    __searchable__ = ['name']
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64))
+
+#whoosh_index(myobj, User)

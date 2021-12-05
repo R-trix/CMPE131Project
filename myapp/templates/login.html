@@ -1,6 +1,5 @@
-{% extends 'base.html' %}
-{% block content %}
-<h1> Sign in </h1>
+{% extends 'base.html' %} {% block content %}
+<h1>Sign In</h1>
 
 <form action="" method="POST" novalidate>
 	{{form.hidden_tag()}}
@@ -16,9 +15,14 @@
 		{{form.remember_me.label}} <br>
 		{{form.remember_me()}}
 	</p>
+	<div>
 	<p>
 		{{form.submit()}}
 	</p>
+	<p>
+		<a href="/createaccount">Create Account</a>
+	</p>
+	</div>
 
 </form>
 

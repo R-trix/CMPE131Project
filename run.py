@@ -1,6 +1,7 @@
 from myapp import myobj
 from myapp import db
 
+
 db.create_all()
 
 myobj.run(debug=True)
@@ -19,7 +20,6 @@ while True:
     print(timer, end="\r")
     time.sleep(1)
     t -= 1
-    new lines to test of something was added
     
     test
 """
