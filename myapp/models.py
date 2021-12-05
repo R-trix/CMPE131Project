@@ -1,10 +1,8 @@
-from flask_sqlalchemy import SQLAlchemy 
 from myapp import db
 from myapp import login
 from flask_login import current_user, UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
-#from flask_whooshalchemy import whoosh_index
-#from flask_whooshalchemy import flask_ext_whooshalchemy 
+
 
 class User(db.Model, UserMixin):
     """
@@ -28,7 +26,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(128), index=True, unique=True)
     public = db.Column(db.Boolean, index=True)
     tasks = db.relationship('Task', backref='user', lazy='dynamic')
-    notes = db.relationship('Note', backref='user', lazy='dynamic')
+    notes = db.relationship('NoteCards', backref='user', lazy='dynamic')
 
     password_hash = db.Column(db.String(128))
 
@@ -56,6 +54,7 @@ class User(db.Model, UserMixin):
 
 
 # some stuff goes here
+
 
     @staticmethod
     def check_valid_credentials(username, email, password, retypePassword):
@@ -133,11 +132,3 @@ class FlashCard(db.Model, UserMixin):
 
     def __repr__(self):
         return f'Term: {self.term}, Definition: {self.definition}'
-
-"""
-class Search(db.Model, UserMixin):
-    __searchable__ = ['name']
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64))
-"""
-#whoosh_index(myobj, User)

@@ -118,14 +118,14 @@ def newacc():
 
 
 @myobj.route("/stopwatch")
-    def stopwatch():
-      """
+def stopwatch():
+    return render_template("stopwatch.html")
+    """
        outputs a stopwatch for timing
 
     Returns:
         render_template: returns stopwatch to use for students.
     """
-        return render_template("stopwatch.html")
 
 
 @myobj.route("/createcard", methods=["POST", "GET"])
