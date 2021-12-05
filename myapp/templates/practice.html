@@ -1,0 +1,26 @@
+{% extends "base.html" %} {% block content %}
+
+<html>
+  <body>
+    <h1>You can practice for your quizzes or test here!</h1>
+    {% for card in qsList %}
+    <div>
+      <ul>
+        <li>{{ card }}</li>
+      </ul>
+    </div>
+    {% endfor %}
+  </body>
+
+  <body>
+    <form action="" method="POST" novalidate>
+      {{ form.hidden_tag() }}
+      <p>
+        {{ form.ans.label }} <br />
+        {{ form.ans(size=128) }}
+      </p>
+      <p>{{ form.submit() }}</p>
+    </form>
+  </body>
+</html>
+{% endblock %}
