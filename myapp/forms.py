@@ -69,7 +69,7 @@ class SearchForm(FlaskForm):
                          'class': 'btn btn-success btn-block'})
 
 
-class Practice(FlaskForm):
+class PracticeForm(FlaskForm):
     ans = StringField('Answer', validators=[DataRequired()])
 
     submit = SubmitField("Submit")
