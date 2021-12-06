@@ -74,7 +74,12 @@ class Practice(FlaskForm):
 
     submit = SubmitField("Submit")
 
-
+class NotesForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    body = StringField('Body', validators=[DataRequired()])
+    
+    submit = SubmitField("Add Note")
+    
 """ 
 <form action="/" method="POST">
         <input type="text" name="content" id="content">

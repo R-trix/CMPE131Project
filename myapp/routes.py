@@ -1,22 +1,20 @@
 #from flask import Flask
-from os import urandom
 from myapp import myobj, db
 
-from myapp.forms import LoginForm, RegisterForm, DeleteForm, SearchForm, Practice, FlashCard
+from myapp.forms import LoginForm, RegisterForm, DeleteForm, SearchForm, Practice, FlashCard, NotesForm
 
 from myapp.models import User
 from myapp.models import Task
 from myapp.models import FlashCard
+from myapp.models import Notes
 
 from flask import render_template, flash, redirect, request 
 # DOUBLE CHECK######
 from flask_login import login_user, logout_user, login_required, current_user, UserMixin
-import random 
-from random import shuffle
 
-#import time
-#import tkinter as tk
-#from datetime import datetime as dt
+import time
+import tkinter as tk
+from datetime import datetime as dt
 
 import threading
 #from myapp import login
@@ -145,7 +143,8 @@ def createcard():
     # once user hits submit, flashcard will be created and be added into the database
     if form.validate_on_submit():
         #flash("Added flashcard.")
-        card = FlashCard(term=form.term.data, definition=form.definition.data)
+        card = FlashCard(term=form.term.data,
+                         definition=form.definition.data)
         db.session.add(card)
         db.session.commit()
 
@@ -168,28 +167,55 @@ def cardview():
     """
     cards_all = []
     # flashcards created by the user will get pushed to the cards_all list
-    for card in current_user.usercard:
+    for card in current_user.usercards:
         cards_all.append(card)
-  #  return render_template("cardview.html", cards_all=cards_all, '''form=form''')
-    return render_template("cardview.html", cards_all=cards_all)
+    return render_template("cardview.html", cards_all=cards_all, form=form)
 
+@myobj.route("/addnote", methods=["POST", "GET"]) #-----------------------------------------------------------
+@login_required
+def add_note():
+    
+    form = NotesForm()
+    
+    if (form.validate_on_submit()):
 
+        title = form.title.data
+        body = form.body.data
+        user_id = current_user.id
+        
+        note = Notes(title=title, body=body, user_id=user_id)
+        db.session.add(note)
+        db.session.commit()
+        flash(f'Note created.')
+        return redirect("/addnote")
 
+    return render_template("addnote.html", form=form)
+    
+@myobj.route("/displaynotes", methods=["POST", "GET"]) #--------------------------------------------------------
+@login_required
+def display_notes():
+    notes = current_user.notes.all()
+    
+    return render_template("displaynotes.html", notes=notes, user=current_user)
+    
+
+# ----------TASK FUNCTION NOT APPLICABLE TO SPECIFIC USERS-----------
 @myobj.route("/task", methods=["POST", "GET"])
 @login_required
 def list_tasks():
-    tasks = Task.query.all()
+    tasks = current_user.tasks.all()
     return render_template("todo.html", tasks=tasks)
 
 
 @myobj.route("/addtask", methods=["POST", "GET"])
 @login_required
 def task_add():
-    content = request.form['content']
+    user_id = current_user.id
+    content = request.form['content'] #Where is this getting put through
     if not content:
         return "Sorry, please try again"
 
-    task = Task(content)
+    task = Task(content, user_id)
     db.session.add(task)
     db.session.commit()
 

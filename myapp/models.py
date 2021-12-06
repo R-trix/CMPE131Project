@@ -9,7 +9,7 @@ class User(db.Model, UserMixin):
         user DB structure for storing into db
     """
 
-    def __init__(self, username, email, password):  # , is_authenticated):
+    def __init__(self, username, email, password):
         """
         parameters:
                 email - string: user's email address; gets stored in a coulumn
@@ -26,7 +26,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(128), index=True, unique=True)
     public = db.Column(db.Boolean, index=True)
     tasks = db.relationship('Task', backref='user', lazy='dynamic')
-    notes = db.relationship('NoteCards', backref='user', lazy='dynamic')
+    notes = db.relationship('Notes', backref='user', lazy='dynamic')
 
     password_hash = db.Column(db.String(128))
 
@@ -110,19 +110,28 @@ class Task(db.Model, UserMixin):
     done = db.Column(db.Boolean, default=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-    def __init__(self, content):
+    def __init__(self, content, user_id):
         self.content = content
+        self.user_id = user_id
         self.done = False
 
     def __repr__(self):
         return '<Content %s>' % self.content
 
 
-class NoteCards(db.Model, UserMixin):
+class Notes(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    notes_name = db.Column(db.String(256))
-    notes_description = db.Column(db.String(512))
+    title = db.Column(db.String(256))
+    body = db.Column(db.String(512))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    
+    def __init__(self, title, body, user_id):
+        self.title = title
+        self.body = body
+        self.user_id = user_id
+    
+    def __repr__(self):
+        return f'<{self.title}: {self.body}>'
 
 
 class FlashCard(db.Model, UserMixin):
