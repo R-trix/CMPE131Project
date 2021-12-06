@@ -55,7 +55,7 @@ class markdown_notes(FlaskForm):
     save_notes = SubmitField('Save Notes')
 
 
-class FlashCard(FlaskForm):
+class FlashCardForm(FlaskForm):
     term = StringField('Term', validators=[DataRequired()])
     definition = StringField('Definition', validators=[DataRequired()])
 
@@ -69,7 +69,7 @@ class SearchForm(FlaskForm):
                          'class': 'btn btn-success btn-block'})
 
 
-class Practice(FlaskForm):
+class PracticeForm(FlaskForm):
     ans = StringField('Answer', validators=[DataRequired()])
 
     submit = SubmitField("Submit")

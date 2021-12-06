@@ -18,12 +18,12 @@
     <form action="" method="POST" novalidate>
       {{ form.hidden_tag() }}
       <p>
-        {{ form.card_term.label }} <br />
-        {{ form.card_term(size=128) }}
+        {{ form.term.label }} <br />
+        {{ form.term(size=128) }}
       </p>
       <p>
-        {{ form.card_def.label }} <br />
-        {{ form.card_def(size=128) }}
+        {{ form.definition.label }} <br />
+        {{ form.definition(size=128) }}
       </p>
       <p>{{ form.submit() }}</p>
     </form>

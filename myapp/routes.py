@@ -1,7 +1,7 @@
 #from flask import Flask
 from myapp import myobj, db
 
-from myapp.forms import LoginForm, RegisterForm, DeleteForm, SearchForm, Practice, FlashCard, NotesForm
+from myapp.forms import LoginForm, RegisterForm, DeleteForm, SearchForm, PracticeForm, FlashCardForm, NotesForm
 
 from myapp.models import User
 from myapp.models import Task
@@ -11,10 +11,11 @@ from myapp.models import Notes
 from flask import render_template, flash, redirect, request 
 # DOUBLE CHECK######
 from flask_login import login_user, logout_user, login_required, current_user, UserMixin
+import random
 
-import time
-import tkinter as tk
-from datetime import datetime as dt
+#import time
+#import tkinter as tk
+#from datetime import datetime as dt
 
 import threading
 #from myapp import login
@@ -139,12 +140,11 @@ def createcard():
         render_template: webpage will ask user to input a word & its definition in a box in order for the flashcard to be created. 
         A button will enter the flashcard into the database
     """
-    form = FlashCard()
+    form = FlashCardForm()
     # once user hits submit, flashcard will be created and be added into the database
     if form.validate_on_submit():
-        #flash("Added flashcard.")
-        card = FlashCard(term=form.term.data,
-                         definition=form.definition.data)
+        flash("Added flashcard.")
+        card = FlashCardForm(term=form.term.data, definition=form.definition.data)
         db.session.add(card)
         db.session.commit()
 
@@ -199,7 +199,6 @@ def display_notes():
     return render_template("displaynotes.html", notes=notes, user=current_user)
     
 
-# ----------TASK FUNCTION NOT APPLICABLE TO SPECIFIC USERS-----------
 @myobj.route("/task", methods=["POST", "GET"])
 @login_required
 def list_tasks():
@@ -297,7 +296,7 @@ def practice():
     Returns:
         render_template: feature will mix the cardsets so user can prepare for their quiz/test. the page should keep track of the correct/incorrect answers of the user. 
     """
-    form = Practice()
+    form = PracticeForm()
     cards_all = FlashCard.query.all()
 
     qsList = []
