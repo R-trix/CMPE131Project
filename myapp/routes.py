@@ -1,7 +1,7 @@
 #from flask import Flask
 from myapp import myobj, db
 
-from myapp.forms import LoginForm, RegisterForm, DeleteForm, SearchForm, Practice, FlashCardForm, NotesForm
+from myapp.forms import LoginForm, RegisterForm, DeleteForm, SearchForm, PracticeForm, FlashCardForm, NotesForm
 
 from myapp.models import User
 from myapp.models import Task
@@ -143,7 +143,7 @@ def createcard():
     form = FlashCardForm()
     # once user hits submit, flashcard will be created and be added into the database
     if form.validate_on_submit():
-        card = FlashCardForm(term=form.term.data, definition=form.definition.data, user_id=current_user.id)
+        card = FlashCard(term=form.term.data, definition=form.definition.data, user_id=current_user.id)
         db.session.add(card)
         db.session.commit()
 
@@ -199,10 +199,6 @@ def display_notes():
     
     return render_template("displaynotes.html", notes=notes, user=current_user)
     
-<<<<<<< HEAD
-=======
-
->>>>>>> 3e20ea8e00506078884c6bda013d4abe4e4064fd
 @myobj.route("/task", methods=["POST", "GET"])
 @login_required
 def list_tasks():
