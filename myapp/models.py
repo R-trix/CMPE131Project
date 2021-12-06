@@ -27,6 +27,7 @@ class User(db.Model, UserMixin):
     public = db.Column(db.Boolean, index=True)
     tasks = db.relationship('Task', backref='user', lazy='dynamic')
     notes = db.relationship('Notes', backref='user', lazy='dynamic')
+    cards = db.relationship('FlashCard', backref='user', lazy='dynamic')
 
     password_hash = db.Column(db.String(128))
 
@@ -138,6 +139,12 @@ class FlashCard(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     term = db.Column(db.String(64), index=True, unique=True)
     definition = db.Column(db.String(128), index=True, unique=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    
+    def __init__(self, term, definition, user_id):
+        self.term = term
+        self.definition = definition
+        self.user_id = user_id
 
     def __repr__(self):
         return f'Term: {self.term}, Definition: {self.definition}'

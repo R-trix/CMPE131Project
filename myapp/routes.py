@@ -1,7 +1,7 @@
 #from flask import Flask
 from myapp import myobj, db
 
-from myapp.forms import LoginForm, RegisterForm, DeleteForm, SearchForm, Practice, FlashCard, NotesForm
+from myapp.forms import LoginForm, RegisterForm, DeleteForm, SearchForm, Practice, FlashCardForm, NotesForm
 
 from myapp.models import User
 from myapp.models import Task
@@ -139,19 +139,20 @@ def createcard():
         render_template: webpage will ask user to input a word & its definition in a box in order for the flashcard to be created. 
         A button will enter the flashcard into the database
     """
-    form = FlashCard()
+    form = FlashCardForm()
     # once user hits submit, flashcard will be created and be added into the database
     if form.validate_on_submit():
         #flash("Added flashcard.")
         card = FlashCard(term=form.term.data,
-                         definition=form.definition.data)
+                         definition=form.definition.data, user_id=current_user.id)
         db.session.add(card)
         db.session.commit()
 
         # the flashcard will be under the user's account if they are signed in
-        if current_user.is_authenticated == True:
-            card.Users.append(current_user)
-            db.session.commit()
+        #if current_user.is_authenticated == True:
+        #    card.User.append(current_user)
+        #    db.session.commit()
+        flash("FlashCard has been created.")
         return redirect("/createcard")
     return render_template("newcard.html", form=form)
 
@@ -165,13 +166,14 @@ def cardview():
     Returns:
         render_template: prints all the cards created by the user 
     """
-    cards_all = []
+    #cards_all = []
     # flashcards created by the user will get pushed to the cards_all list
-    for card in current_user.usercards:
-        cards_all.append(card)
-    return render_template("cardview.html", cards_all=cards_all, form=form)
+    #for card in current_user.usercards:
+    #    cards_all.append(card)
+    cards_all = current_user.cards.all()
+    return render_template("cardview.html", cards_all=cards_all)
 
-@myobj.route("/addnote", methods=["POST", "GET"]) #-----------------------------------------------------------
+@myobj.route("/addnote", methods=["POST", "GET"])
 @login_required
 def add_note():
     
@@ -191,15 +193,13 @@ def add_note():
 
     return render_template("addnote.html", form=form)
     
-@myobj.route("/displaynotes", methods=["POST", "GET"]) #--------------------------------------------------------
+@myobj.route("/displaynotes", methods=["POST", "GET"])
 @login_required
 def display_notes():
     notes = current_user.notes.all()
     
     return render_template("displaynotes.html", notes=notes, user=current_user)
     
-
-# ----------TASK FUNCTION NOT APPLICABLE TO SPECIFIC USERS-----------
 @myobj.route("/task", methods=["POST", "GET"])
 @login_required
 def list_tasks():
@@ -211,9 +211,10 @@ def list_tasks():
 @login_required
 def task_add():
     user_id = current_user.id
-    content = request.form['content'] #Where is this getting put through
+    content = request.form['content']
     if not content:
-        return "Sorry, please try again"
+        flash("Please enter something in the field.")
+        return redirect("/task")
 
     task = Task(content, user_id)
     db.session.add(task)

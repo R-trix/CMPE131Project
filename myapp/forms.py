@@ -55,7 +55,7 @@ class markdown_notes(FlaskForm):
     save_notes = SubmitField('Save Notes')
 
 
-class FlashCard(FlaskForm):
+class FlashCardForm(FlaskForm):
     term = StringField('Term', validators=[DataRequired()])
     definition = StringField('Definition', validators=[DataRequired()])
 
