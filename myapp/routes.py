@@ -1,7 +1,7 @@
 #from flask import Flask
 from werkzeug import datastructures
 from myapp import myobj, db
-from myapp.forms import LoginForm, RegisterForm, DeleteForm, PracticeForm, FlashCardForm, NotesForm, ShuffleForm, UploadForm
+from myapp.forms import LoginForm, RegisterForm, DeleteForm, PracticeForm, FlashCardForm, NotesForm, ShuffleForm, UploadForm, MailForm
 from myapp.models import User, Task, FlashCards, Notes
 from flask import render_template, flash, redirect, request 
 from flask_login import login_user, logout_user, login_required, current_user, UserMixin
@@ -9,6 +9,7 @@ import random
 import pdfkit
 from markdown import markdown
 from werkzeug.utils import secure_filename
+from flask_mail import Message 
 
 
 @myobj.route("/")
@@ -337,7 +338,27 @@ def practice():
 
     return render_template("practice.html", form=form, qsList=qsList)
 
-
+@myobj.route("/sharenotes", methods=["POST", "GET"])
+@login_required
+def share_notes():
+    form = MailForm()
+    
+    if request.method == "POST":
+        try: 
+            email = str(request.form['email'])
+            subject = str(request.form['subject'])
+            email_body = "Emailing you my notes."
+            message = Message(subject, sender="group7@gmail.com", recipients=[email])
+            em_body=email_body
+            message.attach(form.file.data.filename, 'application/octect-stream', form.file.data.read())
+            mail.send(message)
+            flash("Notes are emailed.")
+            return redirect("/addnote")
+        except ConnectionRefusedError as connectionRefusedError_:
+            return "Unable to send email right now, please try again."
+        
+    else: 
+        return render_template("share.html", form=form)
 """
 @myobj.route("/search", methods=['GET', 'POST'])
 @login_required

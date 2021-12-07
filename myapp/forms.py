@@ -3,7 +3,7 @@ from wtforms import BooleanField, IntegerField, StringField, PasswordField, Subm
 from flask_login import current_user
 from wtforms.validators import DataRequired, Length, EqualTo
 from wtforms.widgets.core import TextArea
-from flask_wtf.file import FileField, FileRequired
+from flask_wtf.file import FileField, FileRequired, FileAllowed
 
 
 class LoginForm(FlaskForm):
@@ -90,7 +90,10 @@ class NotesForm(FlaskForm):
     body = StringField('Body', validators=[DataRequired()])
     
     submit = SubmitField("Add Note")
-    
+
+class MailForm(FlaskForm):
+    file = FileField("Upload File", validators=[FileRequired(), FileAllowed(['pdf', 'md'], "You can only upload .pdf and .md files.")])
+    submit = SubmitField("Upload File and Send as an Email.")    
 """ 
 <form action="/" method="POST">
         <input type="text" name="content" id="content">
