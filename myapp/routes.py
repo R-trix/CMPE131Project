@@ -1,7 +1,7 @@
 #from flask import Flask
 from werkzeug import datastructures
 from myapp import myobj, db
-from myapp.forms import LoginForm, RegisterForm, DeleteForm, SearchForm, PracticeForm, FlashCardForm, NotesForm
+from myapp.forms import LoginForm, RegisterForm, DeleteForm, PracticeForm, FlashCardForm, NotesForm, ShuffleForm
 from myapp.models import User, Task, FlashCard, Notes
 from flask import render_template, flash, redirect, request 
 from flask_login import login_user, logout_user, login_required, current_user, UserMixin
@@ -53,9 +53,6 @@ def login():
         return redirect("/")
 
     return render_template("login.html", form=form)
-
-# make logout def
-
 
 @myobj.route("/logout")
 @login_required
@@ -151,12 +148,21 @@ def cardview():
     Returns:
         render_template: prints all the cards created by the user 
     """
+    form = ShuffleForm()
+   # cards_all = current_user.cards.all()
+    cards_list = []
+    for card in current_user.cards:
+        cards_list.append(card)
+        
+    if form.validate_on_submit():
+        flash("Cards shuffled.")
+        random.shuffle(cards_list) 
+
     #cards_all = []
     # flashcards created by the user will get pushed to the cards_all list
     #for card in current_user.usercards:
     #    cards_all.append(card)
-    cards_all = current_user.cards.all()
-    return render_template("cardview.html", cards_all=cards_all)
+    return render_template("cardview.html", cards_all=cards_list, form=form)
 
 @myobj.route("/addnote", methods=["POST", "GET"])
 @login_required
@@ -283,10 +289,9 @@ def practice():
         render_template: feature will mix the cardsets so user can prepare for their quiz/test. the page should keep track of the correct/incorrect answers of the user. 
     """
     form = PracticeForm()
-    cards = current_user.cards.all()
-
+    cards_all = current_user.cards.all()
+    #cards_all=FlashCard.query.all()
     qsList = []
-    
     ansList = []
 
     correct = 0
@@ -294,6 +299,7 @@ def practice():
 
     # to mix:
     #random.shuffle(cards)
+    random.shuffle(cards_all)
 
     for card in cards_all:
         qsList.append(card.term)
@@ -304,7 +310,7 @@ def practice():
     if form.validate_on_submit():
         card_index = 0
         while card_index <= len(qsList):
-            if form.ans == qsList[card_index]:
+            if form.ans.data == qsList[card_index]:
                 correct += 1
             else:
                 incorrect += 1
@@ -313,6 +319,5 @@ def practice():
 
         total_correct = correct/len(qsList)
         total_incorrect = incorrect/len(qsList)
-
-        # return redirect("/score", total_correct = total_correct, total_incorrect=total_incorrect)
+        
     return render_template("practice.html", form=form, qsList=qsList)

@@ -92,18 +92,6 @@ class User(db.Model, UserMixin):
         """
         return User.query.get(int(id))
 
-# for the todo list thing
-
-
-"""
-class ToDo(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    content = db.Column(db.String(128), nullable=False)
-
-    def __repr__(self):
-        # return '<Task %r>' % self.id
-        return f'<Task {self.id}>' """
-
 
 class Task(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)

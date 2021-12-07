@@ -20,6 +20,12 @@
       </dl>
     </div>
     {% endfor %}
+    <form action='' method='POST' novalidate>
+			{{ form.hidden_tag() }}
+			<p>
+				{{ form.shuffle() }}
+			</p>
+		</form>
   </body>
 </html>
 {% endblock %}

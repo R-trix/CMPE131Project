@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import BooleanField, IntegerField, StringField, PasswordField, SubmitField
 from flask_login import current_user
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, Length, EqualTo
 from wtforms.widgets.core import TextArea
 
 
@@ -62,9 +62,9 @@ class FlashCardForm(FlaskForm):
     submit = SubmitField("Submit")
 
 
-class SearchForm(FlaskForm):
-    search = StringField("Search")
-    submit = SubmitField("Submit")
+#class SearchForm(FlaskForm):
+ #   search = StringField("Search")
+  #  submit = SubmitField("Submit")
 
    # search = StringField('Search', validators=[DataRequired()])
 
@@ -74,8 +74,11 @@ class SearchForm(FlaskForm):
 
 class PracticeForm(FlaskForm):
     ans = StringField('Answer', validators=[DataRequired()])
-
     submit = SubmitField("Submit")
+    
+class ShuffleForm(FlaskForm):
+    shuffle = SubmitField("Shuffle!")
+
 
 class NotesForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
