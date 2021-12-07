@@ -63,10 +63,13 @@ class FlashCardForm(FlaskForm):
 
 
 class SearchForm(FlaskForm):
-    search = StringField('Search', validators=[DataRequired()])
+    search = StringField("Search")
+    submit = SubmitField("Submit")
 
-    submit = SubmitField("Submit", render_kw={
-                         'class': 'btn btn-success btn-block'})
+   # search = StringField('Search', validators=[DataRequired()])
+
+    #submit = SubmitField("Submit", render_kw={
+     #                    'class': 'btn btn-success btn-block'})
 
 
 class PracticeForm(FlaskForm):
