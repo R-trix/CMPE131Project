@@ -1,12 +1,14 @@
 {% extends "base.html" %} {% block content %}
-
+<head>  
+    <link rel="stylesheet" href="style.css" />
+</head>
 <h1>
     {% if current_user.is_authenticated %} 
      <h2> Hi {{ current_user.username }}! </h2>
     {% endif %}
 </h1>
 
-<h1> Welcome to The Daily 7! </h1>
+<h1 class="title"> Welcome to The Daily 7! </h1>
 
 
 <h2><a href="/logout">Logout</a></h2>

@@ -1,15 +1,14 @@
 #from flask import Flask
 from werkzeug import datastructures
 from myapp import myobj, db
-from myapp.forms import LoginForm, RegisterForm, DeleteForm, PracticeForm, FlashCardForm, NotesForm, ShuffleForm, UploadForm
+from myapp.forms import LoginForm, RegisterForm, DeleteForm, PracticeForm, FlashCardForm, NotesForm, ShuffleForm
 from myapp.models import User, Task, FlashCard, Notes
 from flask import render_template, flash, redirect, request 
 from flask_login import login_user, logout_user, login_required, current_user, UserMixin
 import random
 import pdfkit
+from markdown import markdown
 from werkzeug.utils import secure_filename
-from markdown import markdown 
-#import os
 
 @myobj.route("/")
 def main():
@@ -58,6 +57,9 @@ def login():
 
     return render_template("login.html", form=form)
 
+# make logout def
+
+
 @myobj.route("/logout")
 @login_required
 def logout():
@@ -105,6 +107,7 @@ def newacc():
 
 
 @myobj.route("/stopwatch")
+@login_required
 def stopwatch():
     return render_template("stopwatch.html")
     """
@@ -338,16 +341,63 @@ def markdown_to_pdf():
 @login_required
 def search():
     form = SearchForm()
-    if request.method=="POST":
-        searched = request.POST['searched']
-        createcard """
-    #if(form.validate_on_submit):
-     #   input = form.search.data
-        
-    #return render_template("search.html", form=form, )
-   # if request.method == 'POST' and form.validate_on_submit():
-    #    return redirect("/searchres", query=form.search.data)
-    #return render_template('search.html', form=form)
+    if request.method == 'POST' and form.validate_on_submit():
+        return redirect("/searchres", query=form.search.data)
+    return render_template('search.html', form=form)
 
 
+@myobj.route("/searchres/<query>")
+@login_required
+def search_result(query):
+    results = User.query.whoosh_search(query).all()
+    return render_template("searchres.html", query=query, results=results)
+""" 
 
+<<<<<<< HEAD
+=======
+# Change order of flash cards based on how often user got answer correct
+
+@myobj.route("/practice", methods=["POST", "GET"])
+@login_required
+def practice():
+    """
+        with this feature, the user can practice preparing for the quiz/test with the flashcards they have created
+
+    Returns:
+        render_template: feature will mix the cardsets so user can prepare for their quiz/test. the page should keep track of the correct/incorrect answers of the user. 
+    """
+    form = PracticeForm()
+    cards = current_user.cards.all()
+
+    qsList = []
+    
+    ansList = []
+
+    correct = 0
+    incorrect = 0
+
+    # to mix:
+    #random.shuffle(cards)
+
+    for card in cards_all:
+        qsList.append(card.term)
+
+    for card in cards_all:
+        ansList.append(card.definition)
+
+    if form.validate_on_submit():
+        card_index = 0
+        while card_index <= len(qsList):
+            if form.ans == qsList[card_index]:
+                correct += 1
+            else:
+                incorrect += 1
+
+            card_index + 1
+
+        total_correct = correct/len(qsList)
+        total_incorrect = incorrect/len(qsList)
+
+        # return redirect("/score", total_correct = total_correct, total_incorrect=total_incorrect)
+    return render_template("practice.html", form=form, qsList=qsList)
+>>>>>>> c587fd9c0018e7c2f2d72b47d0ffe7e512f2e820

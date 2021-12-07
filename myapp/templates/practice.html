@@ -1,10 +1,11 @@
 {% extends "base.html" %} {% block content %}
 
 <html>
+<link rel="stylesheet" href="styles.css">
   <body style="background-color: rgb(186, 236, 105)">
 
   <body>
-    <h1>You can practice for your quizzes or test here!</h1>
+    <h1 class="title">You can practice for your quizzes or test here!</h1>
     {% for card in qsList %}
     <div>
       <ul>
