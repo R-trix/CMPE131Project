@@ -27,7 +27,7 @@ class User(db.Model, UserMixin):
     public = db.Column(db.Boolean, index=True)
     tasks = db.relationship('Task', backref='user', lazy='dynamic')
     notes = db.relationship('Notes', backref='user', lazy='dynamic')
-    cards = db.relationship('FlashCard', backref='user', lazy='dynamic')
+    cards = db.relationship('FlashCards', backref='user', lazy='dynamic')
 
     password_hash = db.Column(db.String(128))
 
@@ -123,11 +123,12 @@ class Notes(db.Model, UserMixin):
         return f'<{self.title}: {self.body}>'
 
 
-class FlashCard(db.Model, UserMixin):
+class FlashCards(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     term = db.Column(db.String(64), index=True, unique=True)
     definition = db.Column(db.String(128), index=True, unique=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    #user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     
     def __init__(self, term, definition, user_id):
         self.term = term

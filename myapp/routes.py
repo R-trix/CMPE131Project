@@ -1,8 +1,13 @@
 #from flask import Flask
 from werkzeug import datastructures
 from myapp import myobj, db
+<<<<<<< HEAD
 from myapp.forms import LoginForm, RegisterForm, DeleteForm, PracticeForm, FlashCardForm, NotesForm, ShuffleForm, UploadForm
 from myapp.models import User, Task, FlashCard, Notes
+=======
+from myapp.forms import LoginForm, RegisterForm, DeleteForm, PracticeForm, FlashCardForm, NotesForm, ShuffleForm
+from myapp.models import User, Task, FlashCards, Notes
+>>>>>>> 11adf3c28f20b3318e8b4efb2007c293bb9e11ac
 from flask import render_template, flash, redirect, request 
 from flask_login import login_user, logout_user, login_required, current_user, UserMixin
 import random
@@ -131,7 +136,8 @@ def createcard():
     form = FlashCardForm()
     # once user hits submit, flashcard will be created and be added into the database
     if form.validate_on_submit():
-        card = FlashCard(term=form.term.data, definition=form.definition.data, user_id=current_user.id)
+        #card = FlashCard(term=form.term.data, definition=form.definition.data, user_id=current_user.id)
+        card = FlashCards(term=form.term.data, definition=form.definition.data, user_id=current_user.id)
         db.session.add(card)
         db.session.commit()
 
@@ -291,6 +297,7 @@ def markdown_to_pdf():
     return render_template('markdown_to_pdf.html', form=form)
 
 
+<<<<<<< HEAD
 @myobj.route("/practice", methods=["POST", "GET"])
 @login_required
 def practice():
@@ -333,6 +340,8 @@ def practice():
         total_incorrect = incorrect/len(qsList)
         
     return render_template("practice.html", form=form, qsList=qsList)
+=======
+>>>>>>> 11adf3c28f20b3318e8b4efb2007c293bb9e11ac
 
 
 """
@@ -351,3 +360,7 @@ def search_result(query):
     results = User.query.whoosh_search(query).all()
     return render_template("searchres.html", query=query, results=results)
 """ 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 11adf3c28f20b3318e8b4efb2007c293bb9e11ac
