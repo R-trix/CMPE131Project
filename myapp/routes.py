@@ -311,7 +311,9 @@ def practice():
     ansList = []
 
     correct = 0
+    total_correct = 0
     incorrect = 0
+    total_incorrect = 0
 
     # to mix:
     #random.shuffle(cards)
