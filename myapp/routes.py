@@ -338,27 +338,12 @@ def practice():
 
     return render_template("practice.html", form=form, qsList=qsList)
 
-@myobj.route("/sharenotes", methods=["POST", "GET"])
-@login_required
-def share_notes():
-    form = MailForm()
+#@myobj.route("/sharenotes", methods=["POST", "GET"])
+#@login_required
+#def share_notes():
+   # form = MailForm()
     
-    if request.method == "POST":
-        try: 
-            email = str(request.form['email'])
-            subject = str(request.form['subject'])
-            email_body = "Emailing you my notes."
-            message = Message(subject, sender="group7@gmail.com", recipients=[email])
-            em_body=email_body
-            message.attach(form.file.data.filename, 'application/octect-stream', form.file.data.read())
-            mail.send(message)
-            flash("Notes are emailed.")
-            return redirect("/addnote")
-        except ConnectionRefusedError as connectionRefusedError_:
-            return "Unable to send email right now, please try again."
-        
-    else: 
-        return render_template("share.html", form=form)
+   
 """
 @myobj.route("/search", methods=['GET', 'POST'])
 @login_required

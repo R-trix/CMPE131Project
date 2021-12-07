@@ -91,9 +91,11 @@ class NotesForm(FlaskForm):
     
     submit = SubmitField("Add Note")
 
+"""
 class MailForm(FlaskForm):
     file = FileField("Upload File", validators=[FileRequired(), FileAllowed(['pdf', 'md'], "You can only upload .pdf and .md files.")])
     submit = SubmitField("Upload File and Send as an Email.")    
+    """
 """ 
 <form action="/" method="POST">
         <input type="text" name="content" id="content">
