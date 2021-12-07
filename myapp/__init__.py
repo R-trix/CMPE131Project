@@ -13,6 +13,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 myobj = Flask(__name__)
 Bootstrap(myobj)
 
+"""
 myobj.config['MAIL_SERVER'] = 'shiv.gmail.com'
 myobj.config['MAIL_PORT'] = 465
 myobj.config['MAIL_USERNAME'] = 'group7@gmail.com'
@@ -28,7 +29,7 @@ myobj.config.from_mapping(
     # SQLALCHEMY_TRACK_MODIFICATIONS=False
     SQLALCHEMY_TRACK_MODIFICATIONS=True
     # db = SQLAlchemy(myobj)
-)
+)"""
 
 
 db = SQLAlchemy(myobj)
