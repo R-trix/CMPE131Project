@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 style="font-family: 'Roboto', sans-serif; text-decoration: none; font-size: 25px; color: black;">Enter a Markdown file to convert to PDF</h1>
+<form method="post" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    {{ form.file }}
+    <input type="submit">
+</form>
+{% if pdf %}
+<!-- <a href="{{ pdf }}" >Hello world!</a> -->
+<h1>Your markdown file was converted to a PDF and stored at {{ pdf }}</h1>
+{% endif %}
+{% if md_file %}
+{{ md_file | safe }}
+{% if success %}
+<p>File has been added</p>
+{% endif %}
+{% endif %}
+{% endblock %}

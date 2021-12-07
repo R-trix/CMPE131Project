@@ -6,6 +6,7 @@ from myapp.models import User, Task, FlashCard, Notes
 from flask import render_template, flash, redirect, request 
 from flask_login import login_user, logout_user, login_required, current_user, UserMixin
 import random
+import pdfkit
 
 @myobj.route("/")
 def main():
@@ -259,6 +260,34 @@ def create_notes():
     else:
         notecards = NoteCards.query.all()
         return render_template('notecard.html', form=form, notecards=notecards, title=title)
+
+@studyapp_obj.route('/markdown_to_pdf', methods=['GET', 'POST'])
+def markdown_to_pdf():
+    '''
+           users upload markdown files.
+
+        returns: pdf version of markdown file
+    '''
+    form = UploadForm()
+    if form.validate_on_submit():
+        # get file name from form
+        filename = secure_filename(form.file.data.filename)
+        form.file.data.save('myapp/flashcards/' + filename)
+        # save the md file name and change to pdf file name
+        input_filename = "myapp/flashcards/" + filename
+        output_filename = input_filename.split(".md")
+        output_filename = output_filename[0] + '.pdf'
+        
+        #convert md file to pdf file
+        with open(input_filename, 'r') as f:
+            html_string = markdown(f.read(), output_format='html')
+        pdfkit.from_string(html_string, output_filename)
+        return render_template('markdown_to_pdf.html', form=form, pdf=output_filename)
+    
+    return render_template('markdown_to_pdf.html', form=form)
+
+
+
 
 """
 @myobj.route("/search", methods=['GET', 'POST'])
