@@ -21,7 +21,7 @@ myobj.config['MAIL_PASSWORD'] = 'unsure'
 myobj.config["MAIL_USE_TLS"] = False
 myobj.config['MAIL_USE_SSL'] = True
 
-mail = Mail(myobj)
+mail = Mail(myobj)"""
 myobj.config.from_mapping(
     SECRET_KEY='you-will-know',
     # location of sqlite databse
@@ -29,7 +29,7 @@ myobj.config.from_mapping(
     # SQLALCHEMY_TRACK_MODIFICATIONS=False
     SQLALCHEMY_TRACK_MODIFICATIONS=True
     # db = SQLAlchemy(myobj)
-)"""
+)
 
 
 db = SQLAlchemy(myobj)
