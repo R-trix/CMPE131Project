@@ -10,6 +10,7 @@ import pdfkit
 from markdown import markdown
 from werkzeug.utils import secure_filename
 
+
 @myobj.route("/")
 def main():
     """
@@ -164,7 +165,7 @@ def cardview():
     # flashcards created by the user will get pushed to the cards_all list
     #for card in current_user.usercards:
     #    cards_all.append(card)
-    return render_template("cardview.html", cards_all=cards_list, form=form)
+    return render_template("cardview.html", cards_all=cards_list, form=form, user=current_user)
 
 
 @myobj.route("/addnote", methods=["POST", "GET"])
