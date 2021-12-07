@@ -311,7 +311,7 @@ def practice():
 
     # to mix:
     #random.shuffle(cards)
-    random.shuffle(cards_all)
+    #random.shuffle(cards_all)
 
     for card in cards_all:
         qsList.append(card.term)
@@ -332,8 +332,20 @@ def practice():
         total_correct = correct/len(qsList)
         total_incorrect = incorrect/len(qsList)
 
-    return render_template("practice.html", form=form, qsList=qsList)
-
+    return render_template("practice.html", form=form, qsList=qsList, total_correct=total_correct, total_incorrect=total_incorrect)
+"""
+@myobj.route("/results", methods=["POST", "GET"])
+@login_required
+def results():
+    total_correct = request.form.get("total_correct")
+    total_incorrect = request.form.get("total_incorrect")
+    
+    
+    
+    return
+"""    
+    
+    
 
 """
 @myobj.route("/search", methods=['GET', 'POST'])

@@ -16,13 +16,18 @@
   </body>
 
   <body>
-    <form action="" method="POST" novalidate>
+    <form action="" method="POST","GET" novalidate>
       {{ form.hidden_tag() }}
       <p>
         {{ form.ans.label }} <br />
         {{ form.ans(size=128) }}
       </p>
       <p>{{ form.submit() }}</p>
+      <button type="submit" formaction="/results">
+            Check your results!
+      </button>
+      <input type="int" name="total_correct">
+      <input type="int" name="total_incorrect">
     </form>
   </body>
 </html>
