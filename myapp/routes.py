@@ -57,9 +57,6 @@ def login():
 
     return render_template("login.html", form=form)
 
-# make logout def
-
-
 @myobj.route("/logout")
 @login_required
 def logout():
@@ -151,7 +148,7 @@ def cardview():
        outputs a page which displays all the flashcards
 
     Returns:
-        render_template: prints all the cards created by the user 
+        render_template: outputs all the cards created by the user 
     """
     form = ShuffleForm()
    # cards_all = current_user.cards.all()
@@ -201,6 +198,12 @@ def display_notes():
 @myobj.route("/task", methods=["POST", "GET"])
 @login_required
 def list_tasks():
+    """
+       the task/todo feature helps users keep track of items they need to complete. the following definitions allow them to add, delete, and mark done any of their items.
+
+    Returns:
+        render_template: todo.html which will list out anf perform desired operation on the action item
+    """
     tasks = current_user.tasks.all()
     return render_template("todo.html", tasks=tasks)
 
