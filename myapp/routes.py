@@ -261,7 +261,7 @@ def create_notes():
         notecards = NoteCards.query.all()
         return render_template('notecard.html', form=form, notecards=notecards, title=title)
 
-@studyapp_obj.route('/markdown_to_pdf', methods=['GET', 'POST'])
+@myobj.route('/markdown_to_pdf', methods=['GET', 'POST'])
 def markdown_to_pdf():
     '''
            users upload markdown files.
