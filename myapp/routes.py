@@ -1,12 +1,11 @@
 #from flask import Flask
 from werkzeug import datastructures
 from myapp import myobj, db
-from myapp.forms import LoginForm, RegisterForm, DeleteForm, PracticeForm, FlashCardForm, NotesForm, ShuffleForm, UploadForm
+from myapp.forms import LoginForm, RegisterForm, DeleteForm, SearchForm, PracticeForm, FlashCardForm, NotesForm, ShuffleForm
 from myapp.models import User, Task, FlashCard, Notes
 from flask import render_template, flash, redirect, request 
 from flask_login import login_user, logout_user, login_required, current_user, UserMixin
 import random
-import pdfkit
 
 @myobj.route("/")
 def main():
@@ -54,6 +53,9 @@ def login():
         return redirect("/")
 
     return render_template("login.html", form=form)
+
+# make logout def
+
 
 @myobj.route("/logout")
 @login_required
@@ -104,6 +106,7 @@ def newacc():
 
 
 @myobj.route("/stopwatch")
+@login_required
 def stopwatch():
     return render_template("stopwatch.html")
     """
@@ -294,20 +297,20 @@ def markdown_to_pdf():
 @login_required
 def search():
     form = SearchForm()
-    if request.method=="POST":
-        searched = request.POST['searched']
-        createcard """
-    #if(form.validate_on_submit):
-     #   input = form.search.data
-        
-    #return render_template("search.html", form=form, )
-   # if request.method == 'POST' and form.validate_on_submit():
-    #    return redirect("/searchres", query=form.search.data)
-    #return render_template('search.html', form=form)
+    if request.method == 'POST' and form.validate_on_submit():
+        return redirect("/searchres", query=form.search.data)
+    return render_template('search.html', form=form)
 
 
+@myobj.route("/searchres/<query>")
+@login_required
+def search_result(query):
+    results = User.query.whoosh_search(query).all()
+    return render_template("searchres.html", query=query, results=results)
+""" 
 
 # Change order of flash cards based on how often user got answer correct
+
 @myobj.route("/practice", methods=["POST", "GET"])
 @login_required
 def practice():
@@ -318,9 +321,10 @@ def practice():
         render_template: feature will mix the cardsets so user can prepare for their quiz/test. the page should keep track of the correct/incorrect answers of the user. 
     """
     form = PracticeForm()
-    cards_all = current_user.cards.all()
-    #cards_all=FlashCard.query.all()
+    cards = current_user.cards.all()
+
     qsList = []
+    
     ansList = []
 
     correct = 0
@@ -328,7 +332,6 @@ def practice():
 
     # to mix:
     #random.shuffle(cards)
-    random.shuffle(cards_all)
 
     for card in cards_all:
         qsList.append(card.term)
@@ -339,7 +342,7 @@ def practice():
     if form.validate_on_submit():
         card_index = 0
         while card_index <= len(qsList):
-            if form.ans.data == qsList[card_index]:
+            if form.ans == qsList[card_index]:
                 correct += 1
             else:
                 incorrect += 1
@@ -348,5 +351,6 @@ def practice():
 
         total_correct = correct/len(qsList)
         total_incorrect = incorrect/len(qsList)
-        
+
+        # return redirect("/score", total_correct = total_correct, total_incorrect=total_incorrect)
     return render_template("practice.html", form=form, qsList=qsList)
