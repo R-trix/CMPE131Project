@@ -7,6 +7,7 @@ from flask import render_template, flash, redirect, request
 from flask_login import login_user, logout_user, login_required, current_user, UserMixin
 import random
 import pdfkit
+from markdown import markdown
 from werkzeug.utils import secure_filename
 
 @myobj.route("/")
