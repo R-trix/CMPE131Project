@@ -1,25 +1,10 @@
 #from flask import Flask
 from myapp import myobj, db
-
 from myapp.forms import LoginForm, RegisterForm, DeleteForm, SearchForm, PracticeForm, FlashCardForm, NotesForm
-
-from myapp.models import User
-from myapp.models import Task
-from myapp.models import FlashCard
-from myapp.models import Notes
-
+from myapp.models import User, Task, FlashCard, Notes
 from flask import render_template, flash, redirect, request 
-# DOUBLE CHECK######
 from flask_login import login_user, logout_user, login_required, current_user, UserMixin
 import random
-
-#import time
-#import tkinter as tk
-#from datetime import datetime as dt
-
-import threading
-#from myapp import login
-
 
 @myobj.route("/")
 def main():
@@ -298,16 +283,17 @@ def practice():
         render_template: feature will mix the cardsets so user can prepare for their quiz/test. the page should keep track of the correct/incorrect answers of the user. 
     """
     form = PracticeForm()
-    cards_all = FlashCard.query.all()
+    cards = current_user.cards.all()
 
     qsList = []
+    
     ansList = []
 
     correct = 0
     incorrect = 0
 
     # to mix:
-    random.shuffle(cards_all)
+    #random.shuffle(cards)
 
     for card in cards_all:
         qsList.append(card.term)
@@ -330,74 +316,3 @@ def practice():
 
         # return redirect("/score", total_correct = total_correct, total_incorrect=total_incorrect)
     return render_template("practice.html", form=form, qsList=qsList)
-
-
-"""
-@myobj.route("/todo", methods=["POST", "GET"])
-def todo():
-    """
-# This todo feature allows users to create a todo list to keep track of their tasks
-
-# returns: will return mainpage or task creation form
-"""
-    if request.method == "POST":
-        task_content = request.form["content"]
-        #new_task = Todo(content=task_content)
-        new_task = todo(content=task_content)
-        try:
-            db.session.add(new_task)
-            db.session.commit()
-            return redirect("/")
-        except:
-            return "Sorry, error adding task, pelase try again later."
-
-    else:
-        # tasks=Todo.query.all()
-        # db.session.query(todo).query.all()
-        # db.session.query(todo).all()
-       # ToDo.query.all()
-        tasks = ToDo.query.all()
-
-        return render_template("index.html", tasks=tasks)
-
-
-# @myobj.route("/delete/<int:id>")
-@myobj.route("/delete", methods=["GET", "POST"])
-def delete(id):
-    """
-# This feature allows user to delete an item they have added to their todo task list
-
-# returns: will return mainpage or task creation form
-"""
-    # task_to_delete=Todo.query.get_or_404(id)
-    task_to_delete = todo.query.get_or_404(id)
-    try:
-        db.session.delete(task_to_delete)
-        db.session.commit()
-        return redirect("/")
-    except:
-        return "Error deleting task, pelase try again later."
-
-
-@myobj.route("/update", methods=["GET", "POST"])
-def update(id):
-    """
-#   This feature allows user to update an item they have added to their todo task list
-
-#   returns: will return update task form
-"""
-    # task=Todo.query.get_or_404(id)
-    task = todo.query.get_or_404(id)
-
-    if request.method == 'POST':
-        task.content = request.form['content']
-
-        try:
-            db.session.commit()
-            return redirect('/')
-        except:
-            return "Error updating task, sorry, try again later. "
-
-    else:
-        return render_template('update.html', task=task)
-"""
