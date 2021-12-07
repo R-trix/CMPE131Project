@@ -1,7 +1,7 @@
 #from flask import Flask
 from werkzeug import datastructures
 from myapp import myobj, db
-from myapp.forms import LoginForm, RegisterForm, DeleteForm, PracticeForm, FlashCardForm, NotesForm, ShuffleForm, UploadForm, 
+from myapp.forms import LoginForm, RegisterForm, DeleteForm, PracticeForm, FlashCardForm, NotesForm, ShuffleForm, UploadForm 
 from myapp.models import User, Task, FlashCards, Notes
 from flask import render_template, flash, redirect, request 
 from flask_login import login_user, logout_user, login_required, current_user, UserMixin
