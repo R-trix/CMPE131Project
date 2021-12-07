@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Hello {{ name }}! Welcome to Notes Taker</h1>
+<h1 class="title">Hello {{ name }}! Welcome to Notes Taker</h1>
 <p>Time to take some notes:</p>
 <form method="POST" novalidate enctype="multipart/form-data">
         {{ form.hidden_tag() }}
