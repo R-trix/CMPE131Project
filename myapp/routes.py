@@ -287,7 +287,7 @@ def markdown_to_pdf():
         #convert md file to pdf file
         with open(input_filename, 'r') as f:
             html_string = markdown(f.read(), output_format='html')
-        wkhtmltopdf.from_string(html_string, output_filename)
+        pdfkit.from_string(html_string, output_filename)
         return render_template('markdown_to_pdf.html', form=form, pdf=output_filename)
     
     return render_template('markdown_to_pdf.html', form=form)
