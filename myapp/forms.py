@@ -60,6 +60,10 @@ class FlashCardForm(FlaskForm):
     definition = StringField('Definition', validators=[DataRequired()])
 
     submit = SubmitField("Submit")
+    
+    
+class UploadForm(FlaskForm):
+    file = FileField()
 
 
 #class SearchForm(FlaskForm):
