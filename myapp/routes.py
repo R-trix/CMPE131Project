@@ -1,4 +1,5 @@
 #from flask import Flask
+from werkzeug import datastructures
 from myapp import myobj, db
 
 from myapp.forms import LoginForm, RegisterForm, DeleteForm, SearchForm, PracticeForm, FlashCardForm, NotesForm
@@ -273,21 +274,20 @@ def create_notes():
 @login_required
 def search():
     form = SearchForm()
-    if request.method == 'POST' and form.validate_on_submit():
-        return redirect("/searchres", query=form.search.data)
-    return render_template('search.html', form=form)
+    if request.method=="POST":
+        searched = request.POST['searched']
+        createcard """
+    #if(form.validate_on_submit):
+     #   input = form.search.data
+        
+    #return render_template("search.html", form=form, )
+   # if request.method == 'POST' and form.validate_on_submit():
+    #    return redirect("/searchres", query=form.search.data)
+    #return render_template('search.html', form=form)
 
 
-@myobj.route("/searchres/<query>")
-@login_required
-def search_result(query):
-    results = User.query.whoosh_search(query).all()
-    return render_template("searchres.html", query=query, results=results)
-""" 
 
 # Change order of flash cards based on how often user got answer correct
-
-
 @myobj.route("/practice", methods=["POST", "GET"])
 @login_required
 def practice():
