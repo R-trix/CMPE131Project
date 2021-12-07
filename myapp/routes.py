@@ -6,7 +6,6 @@ from myapp.models import User, Task, FlashCard, Notes
 from flask import render_template, flash, redirect, request 
 from flask_login import login_user, logout_user, login_required, current_user, UserMixin
 import random
-#import pdfkit
 
 @myobj.route("/")
 def main():
