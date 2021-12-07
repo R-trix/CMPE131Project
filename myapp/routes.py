@@ -7,6 +7,9 @@ from flask import render_template, flash, redirect, request
 from flask_login import login_user, logout_user, login_required, current_user, UserMixin
 import random
 import pdfkit
+from werkzeug.utils import secure_filename
+from markdown import markdown 
+#import os
 
 @myobj.route("/")
 def main():
@@ -65,8 +68,6 @@ def logout():
     """
     logout_user()
     return redirect("/")
-
-# account creation
 
 
 @myobj.route("/createaccount", methods=["GET", "POST"])
@@ -139,7 +140,6 @@ def createcard():
         return redirect("/createcard")
     return render_template("newcard.html", form=form)
 
-
 @myobj.route("/cardview", methods=["POST", "GET"])
 @login_required
 def cardview():
@@ -164,6 +164,7 @@ def cardview():
     #for card in current_user.usercards:
     #    cards_all.append(card)
     return render_template("cardview.html", cards_all=cards_list, form=form)
+
 
 @myobj.route("/addnote", methods=["POST", "GET"])
 @login_required
@@ -192,12 +193,12 @@ def display_notes():
     
     return render_template("displaynotes.html", notes=notes, user=current_user)
     
+    
 @myobj.route("/task", methods=["POST", "GET"])
 @login_required
 def list_tasks():
     tasks = current_user.tasks.all()
     return render_template("todo.html", tasks=tasks)
-
 
 @myobj.route("/addtask", methods=["POST", "GET"])
 @login_required
@@ -214,7 +215,6 @@ def task_add():
 
     return redirect("/task")
 
-
 @myobj.route("/delete/<int:task_id>")
 @login_required
 def task_delete(task_id):
@@ -225,7 +225,6 @@ def task_delete(task_id):
     db.session.delete(task)
     db.session.commit()
     return redirect("/task")
-
 
 @myobj.route("/done/<int:task_id>")
 @login_required
@@ -243,71 +242,6 @@ def task_done(task_id):
     return redirect("/task")
 
 
-@myobj.route('/create_Notes', methods=['GET', 'POST'])
-def create_notes():
-    forms = markdown_notes()
-    title = "Create Notes in markdown"
-
-    if form.validate_on_submit():
-        new_note = NoteCards(notes_name=form.notes_name.data,
-                             notes_description=form.notes_description.data)
-        try:
-            db.session.add(new_note)
-            db.session.commit()
-            return redirect('/create_Notes')
-        except:
-            return flash('Error: Unable to save Notes!')
-    else:
-        notecards = NoteCards.query.all()
-        return render_template('notecard.html', form=form, notecards=notecards, title=title)
-
-@myobj.route('/markdown_to_pdf', methods=['GET', 'POST'])
-def markdown_to_pdf():
-    '''
-           users upload markdown files.
-
-        returns: pdf version of markdown file
-    '''
-    form = UploadForm()
-    if form.validate_on_submit():
-        # get file name from form
-        filename = secure_filename(form.file.data.filename)
-        form.file.data.save('myapp/flashcards/' + filename)
-        # save the md file name and change to pdf file name
-        input_filename = "myapp/flashcards/" + filename
-        output_filename = input_filename.split(".md")
-        output_filename = output_filename[0] + '.pdf'
-        
-        #convert md file to pdf file
-        with open(input_filename, 'r') as f:
-            html_string = markdown(f.read(), output_format='html')
-        pdfkit.from_string(html_string, output_filename)
-        return render_template('markdown_to_pdf.html', form=form, pdf=output_filename)
-    
-    return render_template('markdown_to_pdf.html', form=form)
-
-
-
-
-"""
-@myobj.route("/search", methods=['GET', 'POST'])
-@login_required
-def search():
-    form = SearchForm()
-    if request.method=="POST":
-        searched = request.POST['searched']
-        createcard """
-    #if(form.validate_on_submit):
-     #   input = form.search.data
-        
-    #return render_template("search.html", form=form, )
-   # if request.method == 'POST' and form.validate_on_submit():
-    #    return redirect("/searchres", query=form.search.data)
-    #return render_template('search.html', form=form)
-
-
-
-# Change order of flash cards based on how often user got answer correct
 @myobj.route("/practice", methods=["POST", "GET"])
 @login_required
 def practice():
@@ -315,7 +249,7 @@ def practice():
         with this feature, the user can practice preparing for the quiz/test with the flashcards they have created
 
     Returns:
-        render_template: feature will mix the cardsets so user can prepare for their quiz/test. the page should keep track of the correct/incorrect answers of the user. 
+        render_template: feature will mix the cardsets so user can prepare for their quiz/test.  
     """
     form = PracticeForm()
     cards_all = current_user.cards.all()
@@ -350,3 +284,70 @@ def practice():
         total_incorrect = incorrect/len(qsList)
         
     return render_template("practice.html", form=form, qsList=qsList)
+
+@myobj.route('/create_Notes', methods=['GET', 'POST'])
+def create_notes():
+    forms = markdown_notes()
+    title = "Create Notes in markdown"
+
+    if form.validate_on_submit():
+        new_note = NoteCards(notes_name=form.notes_name.data,
+                             notes_description=form.notes_description.data)
+        try:
+            db.session.add(new_note)
+            db.session.commit()
+            return redirect('/create_Notes')
+        except:
+            return flash('Error: Unable to save Notes!')
+    else:
+        notecards = NoteCards.query.all()
+        return render_template('notecard.html', form=form, notecards=notecards, title=title)
+
+@myobj.route('/markdown_to_pdf', methods=['GET', 'POST'])
+def markdown_to_pdf():
+    '''
+           users upload markdown files.
+
+        returns: pdf version of markdown file
+    '''
+    form = UploadForm()
+    if form.validate_on_submit():
+        # get file name from form
+        filename = secure_filename(form.file.data.filename)
+       # form.file.data.save('myapp/flashcards/' + filename)
+        form.file.data.save('myapp/' + filename)
+        # save the md file name and change to pdf file name
+       # input_filename = "myapp/flashcards/" + filename
+        input_filename = "myapp/" + filename        
+        output_filename = input_filename.split(".md")
+        output_filename = output_filename[0] + '.pdf'
+        
+        #convert md file to pdf file
+        with open(input_filename, 'r') as f:
+            html_string = markdown(f.read(), output_format='html')
+        pdfkit.from_string(html_string, output_filename)
+        return render_template('markdown_to_pdf.html', form=form, pdf=output_filename)
+    
+    return render_template('markdown_to_pdf.html', form=form)
+
+
+
+
+"""
+@myobj.route("/search", methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if request.method=="POST":
+        searched = request.POST['searched']
+        createcard """
+    #if(form.validate_on_submit):
+     #   input = form.search.data
+        
+    #return render_template("search.html", form=form, )
+   # if request.method == 'POST' and form.validate_on_submit():
+    #    return redirect("/searchres", query=form.search.data)
+    #return render_template('search.html', form=form)
+
+
+
