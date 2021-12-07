@@ -1,7 +1,7 @@
 #from flask import Flask
 from werkzeug import datastructures
 from myapp import myobj, db
-from myapp.forms import LoginForm, RegisterForm, DeleteForm, PracticeForm, FlashCardForm, NotesForm, ShuffleForm
+from myapp.forms import LoginForm, RegisterForm, DeleteForm, PracticeForm, FlashCardForm, NotesForm, ShuffleForm, UploadForm
 from myapp.models import User, Task, FlashCards, Notes
 from flask import render_template, flash, redirect, request 
 from flask_login import login_user, logout_user, login_required, current_user, UserMixin
@@ -9,6 +9,7 @@ import random
 import pdfkit
 from markdown import markdown
 from werkzeug.utils import secure_filename
+
 
 @myobj.route("/")
 def main():
@@ -167,7 +168,7 @@ def cardview():
     # flashcards created by the user will get pushed to the cards_all list
     #for card in current_user.usercards:
     #    cards_all.append(card)
-    return render_template("cardview.html", cards_all=cards_list, form=form)
+    return render_template("cardview.html", cards_all=cards_list, form=form, user=current_user)
 
 
 @myobj.route("/addnote", methods=["POST", "GET"])
@@ -329,7 +330,7 @@ def markdown_to_pdf():
         #convert md file to pdf file
         with open(input_filename, 'r') as f:
             html_string = markdown(f.read(), output_format='html')
-        pdfkit.from_string(html_string, output_filename)
+        wkhtmltopdf.from_string(html_string, output_filename)
         return render_template('markdown_to_pdf.html', form=form, pdf=output_filename)
     
     return render_template('markdown_to_pdf.html', form=form)

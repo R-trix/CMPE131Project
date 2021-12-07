@@ -6,7 +6,7 @@
 <ol>
       {% for note in notes %}
       <li>
-        {{ note.title }}
+        <u> <strong> {{ note.title }}</u>: </strong>
         {{ note.body }}
       </li>
       {% endfor %}
