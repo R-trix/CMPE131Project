@@ -291,7 +291,47 @@ def markdown_to_pdf():
     
     return render_template('markdown_to_pdf.html', form=form)
 
+@myobj.route("/practice", methods=["POST", "GET"])
+@login_required
+def practice():
+    """
+        with this feature, the user can practice preparing for the quiz/test with the flashcards they have created
+    Returns:
+        render_template: feature will mix the cardsets so user can prepare for their quiz/test.  
+    """
+    form = PracticeForm()
+    cards_all = current_user.cards.all()
+    #cards_all=FlashCard.query.all()
+    qsList = []
+    ansList = []
 
+    correct = 0
+    incorrect = 0
+
+    # to mix:
+    #random.shuffle(cards)
+    random.shuffle(cards_all)
+
+    for card in cards_all:
+        qsList.append(card.term)
+
+    for card in cards_all:
+        ansList.append(card.definition)
+
+    if form.validate_on_submit():
+        card_index = 0
+        while card_index <= len(qsList):
+            if form.ans.data == qsList[card_index]:
+                correct += 1
+            else:
+                incorrect += 1
+
+            card_index + 1
+
+        total_correct = correct/len(qsList)
+        total_incorrect = incorrect/len(qsList)
+
+    return render_template("practice.html", form=form, qsList=qsList)
 
 
 """
