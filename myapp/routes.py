@@ -19,6 +19,22 @@ def main():
 
         returns: render_template - main page's webpage info
     """
+    users = User.query.all() #Just a checker in output if methods work as intended.
+    for u in users:
+        print(u.id, u.username)
+    
+    tasks = Task.query.all()
+    for t in tasks:
+        print(t.__repr__())
+    
+    notes = Notes.query.all()
+    for n in notes:
+        print(n.__repr__())
+        
+    cards = FlashCards.query.all()
+    for c in cards:
+        print(c.__repr__())
+    
     if (current_user.is_anonymous):
         return render_template("homeanon.html")  # ,user=current_user
     else:
@@ -70,6 +86,7 @@ def logout():
     logout_user()
     return redirect("/")
 
+
 @myobj.route("/createaccount", methods=["GET", "POST"])
 def newacc():
     """
@@ -83,7 +100,7 @@ def newacc():
 
     if (form.validate_on_submit()):
 
-        user = User.query.filter_by(username=username).first()
+        #user = User.query.filter_by(username=username).first()
         
         username = form.username.data
         email = form.email.data
@@ -113,9 +130,23 @@ def delete():
             render_template: this webpage lets users delete thier account. 
     """
     form = DeleteForm()
-    user_to_delete = current_user
     
     if (form.validate_on_submit()):
+        username = form.username.data
+        user_to_delete = User.query.filter_by(username=username).first()
+        
+        notes = user_to_delete.notes.all()
+        for note in notes:
+            db.session.delete(note)
+        
+        cards = user_to_delete.cards.all()
+        for card in cards:
+            db.session.delete(card)
+        
+        tasks = user_to_delete.tasks.all()
+        for task in tasks:
+            db.session.delete(task)
+        
         db.session.delete(user_to_delete)
         db.session.commit()
         return redirect('/')
@@ -379,6 +410,8 @@ def share_notes():
     
     form = ShareFlashCardsForm()
     
+    return
+
     
    
 """
