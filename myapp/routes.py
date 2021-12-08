@@ -9,8 +9,6 @@ import random
 import pdfkit
 from markdown import markdown
 from werkzeug.utils import secure_filename
-#from flask_mail import Message 
-
 
 @myobj.route("/")
 def main():
@@ -39,7 +37,6 @@ def main():
         return render_template("homeanon.html")  # ,user=current_user
     else:
         return render_template("home.html", current_user=current_user)
-
 
 @myobj.route("/login", methods=['GET', 'POST'])
 def login():
@@ -153,7 +150,6 @@ def delete():
         
     return render_template('delete.html', form=form, current_user=current_user)
 
-
 @myobj.route("/stopwatch")
 @login_required
 def stopwatch():
@@ -164,7 +160,6 @@ def stopwatch():
     Returns:
         render_template: returns stopwatch to use for students.
     """
-
 
 @myobj.route("/createcard", methods=["POST", "GET"])
 @login_required
@@ -183,11 +178,7 @@ def createcard():
         card = FlashCards(term=form.term.data, definition=form.definition.data, user_id=current_user.id)
         db.session.add(card)
         db.session.commit()
-
-        # the flashcard will be under the user's account if they are signed in
-        #if current_user.is_authenticated == True:
-        #    card.User.append(current_user)
-        #    db.session.commit()
+        
         flash("FlashCard has been created.")
         return redirect("/createcard")
     return render_template("newcard.html", form=form)
@@ -216,7 +207,6 @@ def cardview():
     #for card in current_user.usercards:
     #    cards_all.append(card)
     return render_template("cardview.html", cards_all=cards_list, form=form, user=current_user)
-
 
 @myobj.route("/addnote", methods=["POST", "GET"])
 @login_required
