@@ -1,15 +1,21 @@
 {% extends "base.html" %} {% block content %}
 
 <html>
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="style.css">
   <body style="background-color: rgb(186, 236, 105)">
 
   <body>
     <h1 class="title">You can practice for your quizzes or test here!</h1>
-    {% for card in qsList %}
+    {% for card in cards_all %}
     <div>
       <ul>
-        <li>{{ card }}</li>
+        <li>{{ card.term }}</li>
+        <form action="" method="POST","GET" novalidate>
+          {{ form.hidden_tag() }}
+            <p>
+              {{ form.ans.label }} <br />
+              {{ form.ans(size=128) }}
+            </p>
       </ul>
     </div>
     {% endfor %}
@@ -18,16 +24,19 @@
   <body>
     <form action="" method="POST","GET" novalidate>
       {{ form.hidden_tag() }}
+      <!--
       <p>
         {{ form.ans.label }} <br />
         {{ form.ans(size=128) }}
       </p>
       <p>{{ form.submit() }}</p>
+      -->
+      <p>{{ form.submit() }}</p>
       <button type="submit" formaction="/results">
             Check your results!
       </button>
-      <input type="int" name="total_correct">
-      <input type="int" name="total_incorrect">
+      <input type="int" name="total_correct" value={{total_correct}}>
+      <input type="int" name="total_incorrect" value={{total_incorrect}}>
     </form>
   </body>
 </html>

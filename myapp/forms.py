@@ -91,6 +91,10 @@ class NotesForm(FlaskForm):
     
     submit = SubmitField("Add Note")
 
+class ShareFlashCardsForm(FlaskForm):
+    user = StringField('Enter the user you want to share with', validators=[DataRequired()])
+    submit = SubmitField("Share FlashCards!")
+
 """
 class MailForm(FlaskForm):
     file = FileField("Upload File", validators=[FileRequired(), FileAllowed(['pdf', 'md'], "You can only upload .pdf and .md files.")])

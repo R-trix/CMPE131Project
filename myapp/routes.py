@@ -1,7 +1,7 @@
 #from flask import Flask
 from werkzeug import datastructures
 from myapp import myobj, db
-from myapp.forms import LoginForm, RegisterForm, DeleteForm, PracticeForm, FlashCardForm, NotesForm, ShuffleForm, UploadForm 
+from myapp.forms import LoginForm, RegisterForm, DeleteForm, PracticeForm, FlashCardForm, NotesForm, ShuffleForm, UploadForm, ShareFlashCardsForm
 from myapp.models import User, Task, FlashCards, Notes
 from flask import render_template, flash, redirect, request 
 from flask_login import login_user, logout_user, login_required, current_user, UserMixin
@@ -84,6 +84,8 @@ def newacc():
 
     if (form.validate_on_submit()):
 
+        user = User.query.filter_by(username=username).first()
+        
         username = form.username.data
         email = form.email.data
         password = form.password.data
@@ -307,8 +309,8 @@ def practice():
     form = PracticeForm()
     cards_all = current_user.cards.all()
     #cards_all=FlashCard.query.all()
-    qsList = []
-    ansList = []
+    #qsList = [] 
+    #ansList = []
 
     correct = 0
     total_correct = 0
@@ -317,44 +319,50 @@ def practice():
 
     # to mix:
     #random.shuffle(cards)
-    #random.shuffle(cards_all)
+    random.shuffle(cards_all)
 
-    for card in cards_all:
-        qsList.append(card.term)
+    #for card in cards_all:
+    #    qsList.append(card)
 
-    for card in cards_all:
-        ansList.append(card.definition)
+    
+    #for card in cards_all:
+    #    ansList.append(card.definition)
 
     if form.validate_on_submit():
         card_index = 0
-        while card_index <= len(qsList):
-            if form.ans.data == qsList[card_index]:
+        #while card_index <= len(qsList):
+        #    if form.ans.data == qsList[card_index]:
+        while card_index <= len(cards_all):
+            if form.ans.data == cards_all[card_index].definition:
                 correct += 1
             else:
                 incorrect += 1
 
             card_index + 1
 
-        total_correct = correct/len(qsList)
-        total_incorrect = incorrect/len(qsList)
+        total_correct = correct/len(cards_all)
+        total_incorrect = incorrect/len(cards_all)
 
-    return render_template("practice.html", form=form, qsList=qsList, total_correct=total_correct, total_incorrect=total_incorrect)
-"""
+    return render_template("practice.html", form=form, cards_all=cards_all, total_correct=total_correct, total_incorrect=total_incorrect)
+
 @myobj.route("/results", methods=["POST", "GET"])
 @login_required
 def results():
-    total_correct = request.form.get("total_correct")
-    total_incorrect = request.form.get("total_incorrect")
+    total_correct = request.form["total_correct"]
+    total_incorrect = request.form["total_incorrect"]
     
+    flash(f"Total correct is {total_correct}")
+    flash(f"Total incorrect is {total_incorrect}")
     
-    
-    return
-"""    
+    return redirect("/practice")
 
-#@myobj.route("/sharenotes", methods=["POST", "GET"])
-#@login_required
-#def share_notes():
-   # form = MailForm()
+
+@myobj.route("/sharenotes", methods=["POST", "GET"])
+@login_required
+def share_notes():
+    
+    form = ShareFlashCardsForm()
+    
     
    
 """
