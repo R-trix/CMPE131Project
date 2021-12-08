@@ -406,12 +406,16 @@ def sharenotes():
     for note in note_list:
         option.append(note)
     
-    form.notes.choice=option
-    
+    form.notes.choices=option
+  
     if(form.validate_on_submit()):
         sendto = User.query.filter(User.username == form.user.data, User.public==True).first()
         if(sendto is not None):
-            sendto.notes.append(Notes.query.filter_by(id=form.notes.data).first())
+            #sendto.notes.append(Notes.query.filter_by(id=form.notes.data).first())
+            note = Notes(form.notes.data.title, form.notes.data, sendto.id)
+            
+            
+            db.session.add(note)
             db.session.commit()
             flash(f"The note was sent to {sendto.username}.")
             redirect ("/addnote")
