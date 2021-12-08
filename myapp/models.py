@@ -1,6 +1,7 @@
 from myapp import db
 from myapp import login
 from flask_login import current_user, UserMixin
+from datetime import datetime
 from werkzeug.security import check_password_hash, generate_password_hash
 
 
@@ -136,3 +137,12 @@ class FlashCards(db.Model, UserMixin):
 
     def __repr__(self):
         return f'Term: {self.term}, Definition: {self.definition}'
+
+class Timer(db.Model, UserMixin):
+    id = db.Column(db.Integer(), primary_key=True, unique=True, autoincrement=True)
+    username = db.Column(db.String(50))
+    pomodoro_interval = db.Column(db.Integer())
+    break_interval = db.Column(db.Integer())
+    
+    
+    
