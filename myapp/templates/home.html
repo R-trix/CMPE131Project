@@ -2,20 +2,28 @@
 <head>  
     <link rel="stylesheet" href="style.css" />
 </head>
+
 <h1>
     {% if current_user.is_authenticated %} 
-     <h2> Hi {{ current_user.username }}! </h2>
+     <h2> Hi {{ current_user.username }}, welcome back! </h2>
     {% endif %}
 </h1>
 
-<h1 class="title"> Welcome to The Daily 7! </h1>
+<!--<h1 class="title"> Welcome to The Daily 7! </h1>-->
+<br>
 
+<p> 
+    This app lets you study and prepare for your classes with various features! <br>
+    Take a look at the images below to glance at a couple of our features.
+    
+</p>
+<br>
 <img src="static/todo.png"> 
 <br>
 <br>
 <img src="static/notes.png"> 
 <br>
-
+<br>
 <h2><a href="/login">Logout</a></h2>
 
 

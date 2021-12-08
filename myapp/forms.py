@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import BooleanField, IntegerField, StringField, PasswordField, SubmitField, FileField
+from wtforms import BooleanField, IntegerField, StringField, PasswordField, SubmitField, FileField, FormField
 from flask_login import current_user
+from wtforms.fields.choices import SelectField
 from wtforms.validators import DataRequired, Length, EqualTo
 from wtforms.widgets.core import TextArea
 from flask_wtf.file import FileField, FileRequired, FileAllowed
@@ -67,15 +68,10 @@ class UploadForm(FlaskForm):
     file = FileField()
 
 
-#class SearchForm(FlaskForm):
- #   search = StringField("Search")
-  #  submit = SubmitField("Submit")
-
-   # search = StringField('Search', validators=[DataRequired()])
-
-    #submit = SubmitField("Submit", render_kw={
-     #                    'class': 'btn btn-success btn-block'})
-
+class SearchForm(FlaskForm):
+    text = StringField("Please enter the text you would like to search for in the flashcards.", validators=[DataRequired()])
+    submit = SubmitField("Find the Flashcard")
+ 
 
 class PracticeForm(FlaskForm):
     ans = StringField('Answer', validators=[DataRequired()])
@@ -91,6 +87,11 @@ class NotesForm(FlaskForm):
     
     submit = SubmitField("Add Note")
 
+class ShareForm(FlaskForm):
+    user = StringField("Send to this user", validators=[DataRequired()])
+    notes = SelectField("Notes")
+    
+    submit = SubmitField("Submit")
 """
 class MailForm(FlaskForm):
     file = FileField("Upload File", validators=[FileRequired(), FileAllowed(['pdf', 'md'], "You can only upload .pdf and .md files.")])
