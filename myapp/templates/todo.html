@@ -5,10 +5,12 @@
     <h1 class="title">Todo Tracker</h1>
 
     <form action="/addtask" method="post">
-      <p><input type="text" name="content" /></p>
+      <p><input type="text" name="content" size="32" placeholder="Type task here"/></p>
       <input type="submit" value="Add task" />
     </form>
+    </br>
 
+    <h3> <u>Here are your tasks! </u> </h3>
     <ol>
       {% for task in tasks %}
       <li>
