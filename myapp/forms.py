@@ -23,12 +23,12 @@ class RegisterForm(FlaskForm):
     """
         this form will allow users to createa a new account
     """
-    username = StringField("Enter a username", validators=[DataRequired()])
-    email = StringField("Enter your email", validators=[DataRequired()])
+    username = StringField("Enter a username:", validators=[DataRequired()])
+    email = StringField("Enter your email:", validators=[DataRequired()])
 
-    password = PasswordField("Enter a password", validators=[DataRequired()])
+    password = PasswordField("Enter a password:", validators=[DataRequired()])
     retypePassword = PasswordField(
-        "Please retype your password", validators=[DataRequired()])
+        "Please retype your password:", validators=[DataRequired()])
 
     submit = SubmitField("Submit")
 
@@ -38,12 +38,12 @@ class DeleteForm(FlaskForm):
         this form will allow the users to delete their account if desired
     """
 
-    username = StringField("Enter your username", validators=[DataRequired()])
-    email = StringField("Enter your email", validators=[DataRequired()])
+    username = StringField("Enter your username:", validators=[DataRequired()])
+    email = StringField("Enter your email:", validators=[DataRequired()])
 
-    password = PasswordField("Enter your password", validators=[DataRequired()])
+    password = PasswordField("Enter your password:", validators=[DataRequired()])
     retypePassword = PasswordField(
-        "Please retype your password", validators=[DataRequired()])
+        "Please retype your password:", validators=[DataRequired()])
 
     submit = SubmitField("Submit")
     confirm = BooleanField(
@@ -58,8 +58,8 @@ class markdown_notes(FlaskForm):
 
 
 class FlashCardForm(FlaskForm):
-    term = StringField('Term', validators=[DataRequired()])
-    definition = StringField('Definition', validators=[DataRequired()])
+    term = StringField('Term', validators=[DataRequired()], render_kw={"placeholder": "Type term here"})
+    definition = StringField('Definition', validators=[DataRequired()], render_kw={"placeholder": "Type definition here"})
 
     submit = SubmitField("Submit")
     

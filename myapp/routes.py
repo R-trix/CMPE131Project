@@ -10,6 +10,7 @@ import pdfkit
 import time
 from markdown import markdown
 from werkzeug.utils import secure_filename
+import time
 
 @myobj.route("/")
 def main():
@@ -337,7 +338,7 @@ def practice():
 
     # to mix:
     #random.shuffle(cards)
-    random.shuffle(cards_all)
+    #random.shuffle(cards_all)
 
     #for card in cards_all:
     #    qsList.append(card)
@@ -350,13 +351,13 @@ def practice():
         card_index = 0
         #while card_index <= len(qsList):
         #    if form.ans.data == qsList[card_index]:
-        while card_index <= len(cards_all):
+        while card_index < len(cards_all):
             if form.ans.data == cards_all[card_index].definition:
                 correct += 1
             else:
                 incorrect += 1
-
-            card_index + 1
+            print(str(card_index) + cards_all[card_index].definition)
+            card_index += 1
 
         total_correct = correct/len(cards_all)
         total_incorrect = incorrect/len(cards_all)
@@ -382,15 +383,27 @@ def sharenotes():
     form = ShareForm()
     
     option = []
+<<<<<<< HEAD
     for note in current_user.notes:
         option.append((note.id, note.title))
     
     form.notes.choices=option
+=======
+    note_list = current_user.notes.all()
+    for note in note_list:
+        option.append(note)
+>>>>>>> d683314554f5af762ff2c4360b265dbf5e87510f
     
+    form.notes.choices=option
+  
     if(form.validate_on_submit()):
-        sendto = User.query.filter(User.username == form.user.date, User.public==True).first()
+        sendto = User.query.filter(User.username == form.user.data, User.public==True).first()
         if(sendto is not None):
-            sendto.notes.append(Note.query.filter_by(id=form.note.data).first())
+            #sendto.notes.append(Notes.query.filter_by(id=form.notes.data).first())
+            note = Notes(form.notes.data.title, form.notes.data, sendto.id)
+            
+            
+            db.session.add(note)
             db.session.commit()
             flash(f"The note was sent to {sendto.username}.")
             redirect ("/addnote")
@@ -441,13 +454,16 @@ def pomodoro():
     
     if request.method == 'POST':
         try:
-            study=(request.form["Time to study"])
+            study=(request.form["Time to study"]) #?
             timer (int(study))
-            return redirect("/timer")
+            return redirect("/timer") #? didnt have timer route, but timer definition was there
         except:
             return flash ("Sorry, there was an error; try again")
     else:
         return render_template("pomo.html", form=form, title=title)
+
+@myobj.route("/timer", methods=["POST", "GET"])
+@login_required
 def timer(t):
     while t:
         mins, secs = divmod(t,60)

@@ -121,7 +121,7 @@ class Notes(db.Model, UserMixin):
         self.user_id = user_id
     
     def __repr__(self):
-        return f'<{self.title}: {self.body}>'
+        return f'{self.title}: {self.body}'
 
 
 class FlashCards(db.Model, UserMixin):

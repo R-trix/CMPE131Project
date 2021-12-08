@@ -9,12 +9,12 @@
     {% for card in cards_all %}
     <div>
       <ul>
-        <li>{{ card.term }}</li>
+        <li>Term: {{ card.term }}</li>
         <form action="" method="POST","GET" novalidate>
           {{ form.hidden_tag() }}
             <p>
               {{ form.ans.label }} <br />
-              {{ form.ans(size=128) }}
+              {{ form.ans(size=64) }}
             </p>
       </ul>
     </div>
@@ -32,7 +32,7 @@
       <p>{{ form.submit() }}</p>
       -->
       <p>{{ form.submit() }}</p>
-      <button type="submit" formaction="/results">
+      <button onclick="">
             Check your results!
       </button>
       <input type="int" name="total_correct" value={{total_correct}}>
