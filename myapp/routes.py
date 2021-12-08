@@ -1,8 +1,8 @@
 #from flask import Flask
 from werkzeug import datastructures
 from myapp import myobj, db
-from myapp.forms import LoginForm, RegisterForm, DeleteForm, PracticeForm, FlashCardForm, NotesForm, ShuffleForm, UploadForm, ShareForm, PomodoroForm 
-from myapp.models import User, Task, FlashCards, Notes
+from myapp.forms import LoginForm, RegisterForm, DeleteForm, PracticeForm, FlashCardForm, NotesForm, ShuffleForm, UploadForm, ShareForm 
+from myapp.models import User, Task, FlashCards, Notes, Timer
 from flask import render_template, flash, redirect, request 
 from flask_login import login_user, logout_user, login_required, current_user, UserMixin
 import random
@@ -424,6 +424,38 @@ def sharenotes():
 @myobj.route("/pomodoro", methods=["POST", "GET"])
 @login_required
 def pomodoro():
+	if request.method == 'POST':
+		inputTimerTarget = request.form['pomodoroInterval']
+		inputBreakTarget = request.form['breakInterval']
+
+		# convert times to minutes:
+		timerTarget = inputTimerTarget[3:]
+		breakTarget = inputBreakTarget[3:]
+
+		# save timer intervals for logged in user
+		newTimer = Timer(member_username=current_user.username, pomodoro_interval=timerTarget, 
+									   break_interval=breakTarget)
+		db.session.add(newTimer)
+		db.session.commit()
+
+		return render_template('pomo.html', timerTarget=timerTarget, breakTarget=breakTarget, 
+												inputTimerTarget=inputTimerTarget, 
+												inputBreakTarget=inputBreakTarget)
+	else:
+		timerDetails = Timer.query.filter_by(username=current_user.username).first()
+		if(timerDetails):
+			inputTimerTarget = ('00:' + str(timerDetails.pomodoro_interval))
+			inputBreakTarget = ('00:' + str(timerDetails.break_interval))
+			return render_template('pomo.html', timerTarget=timerDetails.pomodoro_interval, 
+													breakTarget=timerDetails.break_interval,
+													inputTimerTarget=inputTimerTarget,
+													inputBreakTarget=inputBreakTarget)
+		else:
+			timerTarget = '25'
+			breakTarget = '5'
+			return render_template('pomo.html', timerTarget=timerTarget, breakTarget=breakTarget) 
+							
+"""
     form = PomodoroForm()
     title = "Start the timer"
     
@@ -442,9 +474,9 @@ def pomodoro():
 def timer(t):
     while t:
         mins, secs = divmod(t,60)
-        timer = '{:02d}: {:02d}'.format (mins, secs)
+       # timer = '{:02d}: {:02d}'.format (mins, secs)
         print (timer, end = "\r")
         time.sleep(1)
         t -=1
-    return t
+    return t"""
         
