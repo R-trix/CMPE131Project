@@ -428,9 +428,18 @@ def pomodoro():
     if request.method == 'POST':
         try:
             study=(request.form["Time to study"])
-            #timer (int(study))
+            timer (int(study))
+            return redirect("/timer")
         except:
             return flash ("Sorry, there was an error; try again")
     else:
         return render_template("pomo.html", form=form, title=title)
+def timer(t):
+    while t:
+        mins, secs = divmod(t,60)
+        timer = '{:02d}: {:02d}'.format (mins, secs)
+        print (timer, end = "\r")
+        time.sleep(1)
+        t -=1
+    return t
         
