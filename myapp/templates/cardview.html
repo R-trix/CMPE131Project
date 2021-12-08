@@ -9,13 +9,7 @@
   <body>
     <h1>Here are all your flashcards, {{user.username}}!</h1>
 
-    {% with messages = get_flashed_messages() %} {% if messages %}
-    <ul>
-      {% for message in messages %}
-      <li>{{ message }}</li>
-      {% endfor %}
-    </ul>
-    {% endif %} {% endwith %} {% for card in cards_all %}
+{% for card in cards_all %}
     <div>
       <dl>
         <dt>{{ card.term }}</dt>

@@ -7,6 +7,7 @@ from flask import render_template, flash, redirect, request
 from flask_login import login_user, logout_user, login_required, current_user, UserMixin
 import random
 import pdfkit
+import time
 from markdown import markdown
 from werkzeug.utils import secure_filename
 
@@ -82,7 +83,6 @@ def logout():
     """
     logout_user()
     return redirect("/")
-
 
 @myobj.route("/createaccount", methods=["GET", "POST"])
 def newacc():
@@ -289,25 +289,6 @@ def task_done(task_id):
     db.session.commit()
     return redirect("/task")
 
-
-@myobj.route('/create_Notes', methods=['GET', 'POST'])
-def create_notes():
-    forms = markdown_notes()
-    title = "Create Notes in markdown"
-
-    if form.validate_on_submit():
-        new_note = NoteCards(notes_name=form.notes_name.data,
-                             notes_description=form.notes_description.data)
-        try:
-            db.session.add(new_note)
-            db.session.commit()
-            return redirect('/create_Notes')
-        except:
-            return flash('Error: Unable to save Notes!')
-    else:
-        notecards = NoteCards.query.all()
-        return render_template('notecard.html', form=form, notecards=notecards, title=title)
-
 @myobj.route('/markdown_to_pdf', methods=['GET', 'POST'])
 def markdown_to_pdf():
     '''
@@ -404,7 +385,7 @@ def sharenotes():
     for note in current_user.notes:
         option.append((note.id, note.title))
     
-    form.note.choice=option
+    form.notes.choices=option
     
     if(form.validate_on_submit()):
         sendto = User.query.filter(User.username == form.user.date, User.public==True).first()
@@ -452,6 +433,7 @@ def pomodoro():
 			timerTarget = '25'
 			breakTarget = '5'
 			return render_template('pomo.html', timerTarget=timerTarget, breakTarget=breakTarget) 
+    
 							
 """
     form = PomodoroForm()
