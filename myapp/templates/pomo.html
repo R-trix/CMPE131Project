@@ -9,16 +9,16 @@
         <div class="col">
             <div class="btn-group" role="group" aria-label="timegroup">
                 <button id = "pomodoroButton" type="button" class="btn btn-primary btn-lg" style="background-color: #2d4f5d!important;" onclick="reset(25)" disabled>Pomodoro</button>
-                <button id = "breakButton" type="button" class="btn btn-primary btn-lg" style="background-color: #2d4f5d!important;" onclick="reset(5)">Break</button>
-                <button id = "longBreakButton" type="button" class="btn btn-primary btn-lg" style="background-color: #2d4f5d!important;" onclick="reset(15)"> Long Break</button>
+                <button id = "breakButton" type="button" class="btn btn-primary btn-lg" style="background-color: #2d4f5d!important;" onclick="reset(5)">Rest</button>
+                <button id = "longBreakButton" type="button" class="btn btn-primary btn-lg" style="background-color: #2d4f5d!important;" onclick="reset(15)">Break</button>
             </div>
-        <p id="timer" class="rounded" style="font-size: 60px; margin-left: 10%; margin-right: 10%; background-color: white">25:00</p>
-        <div class="row align-items-center"style= 'margin-left: 20%; margin-right: 20%'>
+        <p id="timer" class="rounded" style="font-size: 60px; margin-right: 10%">25:00</p>
+        <div class="row align-items-center" >
             <div class="col">
                 <button id = "pauseButton" type="button" class="btn btn-primary btn-sm" style="display: none;background-color: #2d4f5d!important;" onclick="setPause()">Pause</button>
                 <button id = "startButton" type="button" class="btn btn-primary btn-sm" style="background-color: #2d4f5d!important;" onclick="run()">Start</button>
             </div>
-            <div class="col">
+            <div class="col"; style= ' margin-left: -90%'>
                 <button id = "resetButton25" type="button" class="btn btn-primary btn-sm" style="background-color: #2d4f5d!important;" onclick="reset(25)">Reset</button>
                 <button id = "resetButton5" type="button" class="btn btn-primary btn-sm" style="display: none; background-color: #2d4f5d!important " onclick="reset(5)">Reset</button> 
                 <button id = "resetButton15" type="button" class="btn btn-primary btn-sm" style="display: none; background-color: #2d4f5d!important " onclick="reset(15)">Reset</button> 
