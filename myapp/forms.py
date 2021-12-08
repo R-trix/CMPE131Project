@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import BooleanField, IntegerField, StringField, PasswordField, SubmitField, FileField, FormField
 from flask_login import current_user
-from wtforms.fields.choices import SelectField
+from wtforms.fields import SelectField
 from wtforms.validators import DataRequired, Length, EqualTo
 from wtforms.widgets.core import TextArea
 from flask_wtf.file import FileField, FileRequired, FileAllowed
@@ -87,18 +87,11 @@ class NotesForm(FlaskForm):
     
     submit = SubmitField("Add Note")
 
-<<<<<<< HEAD
-class ShareFlashCardsForm(FlaskForm):
-    user = StringField('Enter the user you want to share with', validators=[DataRequired()])
-    submit = SubmitField("Share FlashCards!")
-
-=======
 class ShareForm(FlaskForm):
     user = StringField("Send to this user", validators=[DataRequired()])
     notes = SelectField("Notes")
     
     submit = SubmitField("Submit")
->>>>>>> 874b545e53929cb376325632a122c0490e6b07fd
 """
 class MailForm(FlaskForm):
     file = FileField("Upload File", validators=[FileRequired(), FileAllowed(['pdf', 'md'], "You can only upload .pdf and .md files.")])

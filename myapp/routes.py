@@ -393,15 +393,6 @@ def results():
     
     return redirect("/practice")
 
-
-@myobj.route("/sharenotes", methods=["POST", "GET"])
-@login_required
-def share_notes():
-    
-    form = ShareFlashCardsForm()
-    
-    return
-
 @myobj.route("/sharenotes", methods=["POST", "GET"])
 @login_required
 def sharenotes():
