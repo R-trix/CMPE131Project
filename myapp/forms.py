@@ -92,6 +92,10 @@ class ShareForm(FlaskForm):
     notes = SelectField("Notes")
     
     submit = SubmitField("Submit")
+    
+class PomodoroForm(FlaskForm):
+    study=IntegerField("Study Time", validators=[DataRequired()])
+    start=SubmitField("Start")
 """
 class MailForm(FlaskForm):
     file = FileField("Upload File", validators=[FileRequired(), FileAllowed(['pdf', 'md'], "You can only upload .pdf and .md files.")])

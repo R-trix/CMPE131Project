@@ -1,0 +1,62 @@
+{% extends "base.html" %} {% block content %}
+
+<html>
+<link rel="stylesheet" href="styles.css">
+  <body style="background-color: rgb(186, 236, 105)">
+
+    <strong style="color: black;">Set Timer (in minutes):</strong> <input id="userInput" type="number" value="0" />
+</p>
+<button onclick="start()">Start Timer</button>
+<button onclick="stop()">Stop Timer</button>
+
+<script>
+  var countdownTimer;
+  var timer = document.getElementById("userInput");
+  var myTimer;
+  
+  
+  function start() {
+    countdownTimer = setInterval(startTimer, 1000);
+    document.getElementById("timer1").innerHTML = timer.value;
+    myTimer = timer.value * 60;
+  }
+
+  function startTimer() {
+    myTimer--;
+    document.getElementById("timer1").innerHTML = myTimer;
+    if (myTimer == -1) {
+      stop();
+      document.getElementById("timer1").innerHTML = "0";
+      alert ('Time over!');
+    }
+  }
+  function stop() {
+    clearInterval(countdownTimer);
+    timeoutAudio.play();
+  }
+  function startTime() {
+    const today = new Date();
+    let h = today.getHours();
+    let m = today.getMinutes();
+    let s = today.getSeconds();
+    m = checkTime(m);
+    s = checkTime(s);
+    document.getElementById("txt").innerHTML = h + ":" + m + ":" + s;
+    setTimeout(startTime, 1000);
+  }
+
+  function checkTime(i) {
+    if (i < 10) {
+      i = "0" + i;
+    }
+    return i;
+  }
+  setInterval(function () {
+    startTime();
+  }, 500);
+</script>
+
+
+
+</html>
+{% endblock %}
