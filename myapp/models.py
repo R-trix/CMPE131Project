@@ -125,10 +125,9 @@ class Notes(db.Model, UserMixin):
 
 class FlashCards(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    term = db.Column(db.String(64), index=True, unique=True)
-    definition = db.Column(db.String(128), index=True, unique=True)
+    term = db.Column(db.String(64))
+    definition = db.Column(db.String(128))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    #user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     
     def __init__(self, term, definition, user_id):
         self.term = term

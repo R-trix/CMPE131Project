@@ -9,8 +9,6 @@ import random
 import pdfkit
 from markdown import markdown
 from werkzeug.utils import secure_filename
-#from flask_mail import Message 
-
 
 @myobj.route("/")
 def main():
@@ -19,11 +17,26 @@ def main():
 
         returns: render_template - main page's webpage info
     """
+    users = User.query.all() #Just a checker in output if methods work as intended.
+    for u in users:
+        print(u.id, u.username)
+    
+    tasks = Task.query.all()
+    for t in tasks:
+        print(t.__repr__())
+    
+    notes = Notes.query.all()
+    for n in notes:
+        print(n.__repr__())
+        
+    cards = FlashCards.query.all()
+    for c in cards:
+        print(c.__repr__())
+    
     if (current_user.is_anonymous):
         return render_template("homeanon.html")  # ,user=current_user
     else:
         return render_template("home.html", current_user=current_user)
-
 
 @myobj.route("/login", methods=['GET', 'POST'])
 def login():
@@ -70,6 +83,7 @@ def logout():
     logout_user()
     return redirect("/")
 
+
 @myobj.route("/createaccount", methods=["GET", "POST"])
 def newacc():
     """
@@ -83,6 +97,8 @@ def newacc():
 
     if (form.validate_on_submit()):
 
+        #user = User.query.filter_by(username=username).first()
+        
         username = form.username.data
         email = form.email.data
         password = form.password.data
@@ -111,15 +127,28 @@ def delete():
             render_template: this webpage lets users delete thier account. 
     """
     form = DeleteForm()
-    user_to_delete = current_user
     
     if (form.validate_on_submit()):
+        username = form.username.data
+        user_to_delete = User.query.filter_by(username=username).first()
+        
+        notes = user_to_delete.notes.all()
+        for note in notes:
+            db.session.delete(note)
+        
+        cards = user_to_delete.cards.all()
+        for card in cards:
+            db.session.delete(card)
+        
+        tasks = user_to_delete.tasks.all()
+        for task in tasks:
+            db.session.delete(task)
+        
         db.session.delete(user_to_delete)
         db.session.commit()
         return redirect('/')
         
     return render_template('delete.html', form=form, current_user=current_user)
-
 
 @myobj.route("/stopwatch")
 @login_required
@@ -131,7 +160,6 @@ def stopwatch():
     Returns:
         render_template: returns stopwatch to use for students.
     """
-
 
 @myobj.route("/createcard", methods=["POST", "GET"])
 @login_required
@@ -150,11 +178,7 @@ def createcard():
         card = FlashCards(term=form.term.data, definition=form.definition.data, user_id=current_user.id)
         db.session.add(card)
         db.session.commit()
-
-        # the flashcard will be under the user's account if they are signed in
-        #if current_user.is_authenticated == True:
-        #    card.User.append(current_user)
-        #    db.session.commit()
+        
         flash("FlashCard has been created.")
         return redirect("/createcard")
     return render_template("newcard.html", form=form)
@@ -183,7 +207,6 @@ def cardview():
     #for card in current_user.usercards:
     #    cards_all.append(card)
     return render_template("cardview.html", cards_all=cards_list, form=form, user=current_user)
-
 
 @myobj.route("/addnote", methods=["POST", "GET"])
 @login_required
@@ -323,36 +346,52 @@ def practice():
     form = PracticeForm()
     cards_all = current_user.cards.all()
     #cards_all=FlashCard.query.all()
-    qsList = []
-    ansList = []
+    #qsList = [] 
+    #ansList = []
 
     correct = 0
+    total_correct = 0
     incorrect = 0
+    total_incorrect = 0
 
     # to mix:
     #random.shuffle(cards)
     random.shuffle(cards_all)
 
-    for card in cards_all:
-        qsList.append(card.term)
+    #for card in cards_all:
+    #    qsList.append(card)
 
-    for card in cards_all:
-        ansList.append(card.definition)
+    
+    #for card in cards_all:
+    #    ansList.append(card.definition)
 
     if form.validate_on_submit():
         card_index = 0
-        while card_index <= len(qsList):
-            if form.ans.data == qsList[card_index]:
+        #while card_index <= len(qsList):
+        #    if form.ans.data == qsList[card_index]:
+        while card_index <= len(cards_all):
+            if form.ans.data == cards_all[card_index].definition:
                 correct += 1
             else:
                 incorrect += 1
 
             card_index + 1
 
-        total_correct = correct/len(qsList)
-        total_incorrect = incorrect/len(qsList)
+        total_correct = correct/len(cards_all)
+        total_incorrect = incorrect/len(cards_all)
 
-    return render_template("practice.html", form=form, qsList=qsList)
+    return render_template("practice.html", form=form, cards_all=cards_all, total_correct=total_correct, total_incorrect=total_incorrect)
+
+@myobj.route("/results", methods=["POST", "GET"])
+@login_required
+def results():
+    total_correct = request.form["total_correct"]
+    total_incorrect = request.form["total_incorrect"]
+    
+    flash(f"Total correct is {total_correct}")
+    flash(f"Total incorrect is {total_incorrect}")
+    
+    return redirect("/practice")
 
 @myobj.route("/sharenotes", methods=["POST", "GET"])
 @login_required

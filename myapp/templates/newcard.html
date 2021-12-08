@@ -6,17 +6,9 @@
   <body style="background-color: rgb(186, 236, 105)">
 
   <head>
-    <title class="title">Enter Flashcard</title>
+    <title>Enter Flashcard</title>
   </head>
   <body>
-    {% with messages = get_flashed_messages() %} {% if messages %}
-    <ul>
-      {% for message in messages %}
-      <li>{{ message }}</li>
-      {% endfor %}
-    </ul>
-    {% endif %} {% endwith %}
-
     <h1>Enter flashcard information here</h1>
     <form action="" method="POST" novalidate>
       {{ form.hidden_tag() }}
