@@ -70,7 +70,6 @@ def logout():
     logout_user()
     return redirect("/")
 
-
 @myobj.route("/createaccount", methods=["GET", "POST"])
 def newacc():
     """
@@ -105,6 +104,23 @@ def newacc():
         return redirect("/")
 
     return render_template("newacc.html", form=form)
+
+@myobj.route("/deleteacc", methods=["GET", "POST"])
+def delete():
+    """ 
+        lets users delete their account from the account dropdown menu 
+        returns:
+            render_template: this webpage lets users delete thier account. 
+    """
+    form = DeleteForm()
+    user_to_delete = current_user
+    
+    if (form.validate_on_submit()):
+        db.session.delete(user_to_delete)
+        db.session.commit()
+        return redirect('/')
+        
+    return render_template('delete.html', form=form, current_user=current_user)
 
 
 @myobj.route("/stopwatch")

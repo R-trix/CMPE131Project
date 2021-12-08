@@ -37,10 +37,10 @@ class DeleteForm(FlaskForm):
         this form will allow the users to delete their account if desired
     """
 
-    username = StringField("Enter a username", validators=[DataRequired()])
+    username = StringField("Enter your username", validators=[DataRequired()])
     email = StringField("Enter your email", validators=[DataRequired()])
 
-    password = PasswordField("Enter a password", validators=[DataRequired()])
+    password = PasswordField("Enter your password", validators=[DataRequired()])
     retypePassword = PasswordField(
         "Please retype your password", validators=[DataRequired()])
 

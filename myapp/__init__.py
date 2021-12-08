@@ -22,6 +22,7 @@ myobj.config["MAIL_USE_TLS"] = False
 myobj.config['MAIL_USE_SSL'] = True
 
 mail = Mail(myobj)"""
+
 myobj.config.from_mapping(
     SECRET_KEY='you-will-know',
     # location of sqlite databse
