@@ -321,9 +321,9 @@ def markdown_to_pdf():
 @login_required
 def practice():
     """
-        with this feature, the user can practice preparing for the quiz/test with the flashcards they have created
+        with this feature, the user can practice preparing with the flashcards they have created
     Returns:
-        render_template: feature will mix the cardsets so user can prepare for their quiz/test.  
+        render_template: feature will mix the cardsets so user can prepare
     """
     form = PracticeForm()
     cards_all = current_user.cards.all()
@@ -378,7 +378,13 @@ def results():
 @myobj.route("/sharenotes", methods=["POST", "GET"])
 @login_required
 def sharenotes():
-    """[summary]
+    """
+        this feature will let users share their set of notes with another existing user.     
+
+    Returns:
+        Current user will get a flashed message informing them whether or not the note was sent. 
+        if the note was not sent, user will be redirected to the share notes page.
+        shrenote.html contains the webpage info        
     """
     form = ShareForm()
     
@@ -409,5 +415,10 @@ def sharenotes():
 @myobj.route("/pomodoro", methods=["POST", "GET"])
 @login_required
 def pomodoro():
+    """
+        this feature lets users take advantage of the pomodoro timer with timer/breaks 
+    Returns:
+        return render template of the html file
+    """
     title = "Pomodoro Timer!"
     return render_template("pomo.html", title=title)
