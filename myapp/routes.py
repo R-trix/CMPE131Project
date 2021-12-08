@@ -1,7 +1,7 @@
 #from flask import Flask
 from werkzeug import datastructures
 from myapp import myobj, db
-from myapp.forms import LoginForm, RegisterForm, DeleteForm, PracticeForm, FlashCardForm, NotesForm, ShuffleForm, UploadForm, ShareFlashCardsForm
+from myapp.forms import LoginForm, RegisterForm, DeleteForm, PracticeForm, FlashCardForm, NotesForm, ShuffleForm, UploadForm, ShareForm 
 from myapp.models import User, Task, FlashCards, Notes
 from flask import render_template, flash, redirect, request 
 from flask_login import login_user, logout_user, login_required, current_user, UserMixin
@@ -402,21 +402,28 @@ def share_notes():
     
     return
 
+@myobj.route("/sharenotes", methods=["POST", "GET"])
+@login_required
+def sharenotes():
+    """[summary]
+    """
+    form = ShareForm()
     
-   
-"""
-@myobj.route("/search", methods=['GET', 'POST'])
-@login_required
-def search():
-    form = SearchForm()
-    if request.method == 'POST' and form.validate_on_submit():
-        return redirect("/searchres", query=form.search.data)
-    return render_template('search.html', form=form)
-
-
-@myobj.route("/searchres/<query>")
-@login_required
-def search_result(query):
-    results = User.query.whoosh_search(query).all()
-    return render_template("searchres.html", query=query, results=results)
-""" 
+    option = []
+    for note in current_user.notes:
+        option.append((note.id, note.title))
+    
+    form.note.choice=option
+    
+    if(form.validate_on_submit()):
+        sendto = User.query.filter(User.username == form.user.date, User.public==True).first()
+        if(sendto is not None):
+            sendto.notes.append(Note.query.filter_by(id=form.note.data).first())
+            db.session.commit()
+            flash(f"The note was sent to {sendto.username}.")
+            redirect ("/addnote")
+        else:
+            flash("Sorry, the requested user was not found. Pleases try again later.")
+            redirect("/sharenotes")
+        
+    return render_template("sharenote.html", form=form)
