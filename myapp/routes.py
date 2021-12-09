@@ -399,7 +399,7 @@ def sharenotes():
         sendto = User.query.filter(User.username == form.user.data, User.public==True).first()
         if(sendto is not None):
             #sendto.notes.append(Notes.query.filter_by(id=form.notes.data).first())
-            note = Notes(form.notes.data.title, form.notes.data, sendto.id)
+            note = Notes(form.notes.data, form.notes.data, sendto.id)
             
             
             db.session.add(note)
